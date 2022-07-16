@@ -83,14 +83,15 @@ class home extends StatelessWidget {
                              String img= Recipe.data()!['img'];
                              bool isVeg=Recipe.data()!['isVeg'];
                              List preparation =Recipe.data()!['Preparation'];
-                             
+                             Map <String,dynamic> ingredients=Recipe.data()!['ingre'];
+                             print(ingredients);
                              
 
                             //  recipes curRecipe=recipes(Calories: Calories,Cuisine: Cuisine,Time: Time,Title: Title,)
 
                             Navigator.push(context,MaterialPageRoute(builder: (context) =>  cookPage(Cuisine: Cuisine,Calories: Calories,
                             Time: Time,Title: Title,img: img,isveg: isVeg,
-                            preparation: preparation,
+                            preparation: preparation,ingredients: ingredients,
                             )));
                             },
                           child: Container(

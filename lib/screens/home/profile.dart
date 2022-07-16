@@ -19,7 +19,10 @@ final _formKeyN = GlobalKey<FormState>();
 final _formKeyP = GlobalKey<FormState>();
 
 class Profile extends StatefulWidget {
-  const Profile({Key? key}) : super(key: key);
+  
+  String name="";
+  String phoneNumber="";
+  Profile({required this.name,required this.phoneNumber});
 
   @override
   State<Profile> createState() => _ProfileState();
@@ -31,13 +34,14 @@ class Profile extends StatefulWidget {
  final _formKeyP = GlobalKey<FormState>();
  
   
+ 
+  
   @override
   Widget build(BuildContext context) {
       double wt= MediaQuery.of(context).size.width;
       final User? user = _auth.currentUser;
       String? email123=user?.email;
-      String name="";
-      String phoneNumber="";
+      
       // name= DatabaseService(uid: user!.uid).getName().toString();
 
 
@@ -59,18 +63,18 @@ class Profile extends StatefulWidget {
 
             
             children: [
-              if(!updateName)Text(name,style: TextStyle(color: Colors.grey[600],fontWeight:FontWeight.w400))
+              if(!updateName)Text(widget.name,style: TextStyle(color: Colors.grey[600],fontWeight:FontWeight.w400))
                else Form
                (key: _formKeyN,
                  child: TextFormField(
                    
-                  initialValue: name,
+                  initialValue: widget.name,
                          validator: (value) =>value!.isEmpty?'Name cannot be empty':null,
                          keyboardType: TextInputType.name,
                          textAlign: TextAlign.left,
                          
                       onChanged: (value) {
-                      name = value;
+                      widget.name = value;
                     },
                       decoration: InputDecoration(border: InputBorder.none,
                       constraints: BoxConstraints(maxWidth:0.8*wt),
@@ -96,7 +100,7 @@ class Profile extends StatefulWidget {
             SizedBox(height: 45,width:207,
               child: ElevatedButton(onPressed:()async{
                 if(_formKeyN.currentState!.validate()){
-                  await DatabaseService(uid: user!.uid).updateUserName(name);
+                  await DatabaseService(uid: user!.uid).updateUserName(widget.name);
                   setState(() => updateName=false);
 
                 }
@@ -131,19 +135,19 @@ class Profile extends StatefulWidget {
            Row(
              mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              if(!updatePhone)Text(phoneNumber,style: TextStyle(color: Colors.grey[600],fontWeight:FontWeight.w400))
+              if(!updatePhone)Text(widget.phoneNumber,style: TextStyle(color: Colors.grey[600],fontWeight:FontWeight.w400))
                else Form(
                 key: _formKeyP,
                  child: TextFormField(
                    
-                  initialValue: phoneNumber,
+                  initialValue: widget.phoneNumber,
                    validator: (value) =>value!.isEmpty?'Phone Number cannot be empty':null,
                            
                           keyboardType: TextInputType.number,
                          textAlign: TextAlign.left,
                          
                       onChanged: (value) {
-                      phoneNumber = value;
+                      widget.phoneNumber = value;
                     },
                       decoration: InputDecoration(border: InputBorder.none,
                       constraints: BoxConstraints(maxWidth:0.8*wt),
@@ -174,7 +178,7 @@ class Profile extends StatefulWidget {
                 if(_formKeyP.currentState!.validate())
                             {
 
-                 await DatabaseService(uid: user!.uid).updateUserPhone(phoneNumber);
+                 await DatabaseService(uid: user!.uid).updateUserPhone(widget.phoneNumber);
                  setState(() => updatePhone=false);
                             }
 

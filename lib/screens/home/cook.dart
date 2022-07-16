@@ -18,10 +18,11 @@ class cookPage extends StatelessWidget {
      String img;
      bool isveg;
      List preparation;
+     Map <String,dynamic> ingredients;
      
   cookPage({required this.Calories,required this.Cuisine,required this.Time,required this.Title,
   required this.img,required this.isveg,
-   required this.preparation
+   required this.preparation,required this.ingredients
   });
     // cookPage({required this.currentRecipe});
   @override
@@ -63,8 +64,22 @@ class cookPage extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(20,0,15,0),
               child: Divider(height: ht*0.05,color:Colors.grey[900]),
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(30,0,30,0),
+           
+            SizedBox(height: 15,),
+  
+            
+            Expanded(
+              child: Container(
+                padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                width: wt,
+                // height: double.infinity,
+                child: ListView(
+                  
+                  
+                  scrollDirection: Axis.vertical,
+                  children:[
+                     Padding(
+              padding: const EdgeInsets.fromLTRB(0,0,0,10),
               child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                 Text("Time to Cook: ${Time}",style:TextStyle(fontSize: 15,fontWeight:FontWeight.w400,)),
@@ -72,16 +87,51 @@ class cookPage extends StatelessWidget {
 
               ],),
             ),
-            SizedBox(height: 15,),
-            Text("INGREDIENTS",style: TextStyle(fontSize: 18,fontWeight:FontWeight.w500,)),
-
+                  Center(child: Text("INGREDIENTS",style: TextStyle(fontSize: 18,fontWeight:FontWeight.w500,))),
+                //ingredients tiles
+                  Container(
+                            width: wt,
+                            child: ListView.builder(
+                              itemCount: ingredients.length,
+                              physics: NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemBuilder: (BuildContext context, int ind) {
+                                return Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Text("${ind+1}:${ingredients[ind]}",style: TextStyle(color:Colors.grey[800],fontWeight:FontWeight.w300 ),),
+                                );
+                              },
+                            ),
+                          ),
+                  Center(child: Text("PREPARATION",style: TextStyle(fontSize: 18,fontWeight:FontWeight.w500,))),
+                
+                  
+                   Container(
+                            width: wt,
+                            child: ListView.builder(
+                              itemCount: preparation.length,
+                              physics: NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Text("${index+1}:${preparation[index]}",style: TextStyle(color:Colors.grey[800],fontWeight:FontWeight.w300 ),),
+                                );
+                              },
+                            ),
+                          ),
             
-            //ingredients tiles
-            SizedBox(height: 300,),
-            Text("PREPARATION",style: TextStyle(fontSize: 18,fontWeight:FontWeight.w500,)),
-            
-           
+                  
+                  ]
+                  ),
+              ),
+            )
 
+
+                
+                       
+             
+            
 
           ],
         )

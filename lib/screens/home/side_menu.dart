@@ -2,17 +2,23 @@
 
 // ignore_for_file: prefer_const_constructors
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled/screens/home/cook.dart';
 import 'package:untitled/services/auth.dart';
 import 'profile.dart';
-String name="";
+final FirebaseAuth _auth =FirebaseAuth.instance;
+final User? user = _auth.currentUser;
 
-final AuthSerivice _auth = AuthSerivice();
+
+
 class sideMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+     
+
     return Drawer(
       
       backgroundColor: Colors.white.withOpacity(0.9),
@@ -36,7 +42,7 @@ class sideMenu extends StatelessWidget {
             child: Column(
               children: [
                 Text( 'Recipe Hub',style: TextStyle(color: Colors.white, fontSize: 25),),
-                Text(name),
+               
               ],
             ),
           ),
@@ -44,7 +50,12 @@ class sideMenu extends StatelessWidget {
           ListTile(
             leading: Icon(CupertinoIcons.profile_circled),
             title: Text('Profile'),
-            onTap: () => {Navigator.push(context,MaterialPageRoute(builder: (context) => const Profile()))},
+            onTap: ()async{
+              final curUser =await FirebaseFirestore.instance.collection('userInfo').doc(user!.uid).get();
+              String name= curUser.data()!['Name'];
+              String phoneNumber=curUser.data()!['PhoneNumber'];
+              
+              Navigator.push(context,MaterialPageRoute(builder: (context) =>  Profile(name: name,phoneNumber: phoneNumber,)));},
           ),
           ListTile(
             leading: Icon(Icons.settings),
