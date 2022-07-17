@@ -1,5 +1,5 @@
 // ignore: camel_case_types
-class recipes{
+class recipeModel{
 
   bool isLike;
   String RecipeId;
@@ -12,7 +12,7 @@ class recipes{
   List preparation=[];
   Map <String,dynamic> ingredients =Map();
 
-  recipes({required this.calories,required this.cuisine,required this.time,required this.title,required this.RecipeId,
+  recipeModel({required this.calories,required this.cuisine,required this.time,required this.title,required this.RecipeId,
   required this.img,required this.preparation,required this.ingredients,required this.isveg,required this.isLike});
 
 }

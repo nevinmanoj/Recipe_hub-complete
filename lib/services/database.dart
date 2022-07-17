@@ -41,10 +41,6 @@ class DatabaseService{
    
         List favorites=user.data()!['Favorites'];
         
-
-        
-
-
         bool isLike=favorites.contains(RecipeId);
         int Calories= Recipe.data()!['Calories'];
         String Cuisine= Recipe.data()!['Cuisine'];
@@ -54,10 +50,15 @@ class DatabaseService{
         bool isVeg=Recipe.data()!['isVeg'];
         List preparation =Recipe.data()!['Preparation'];
         Map <String,dynamic> ingredients=Recipe.data()!['ingre'];
-        return recipes(calories: Calories, cuisine: Cuisine, time: Time, title: Title,
+        return recipeModel(calories: Calories, cuisine: Cuisine, time: Time, title: Title,
          img: img, preparation: preparation, ingredients: ingredients, isveg:isVeg,RecipeId:RecipeId,isLike: isLike);
 
+  }
+  Future getRecipeWithCuisine({required String Cuisine})async{
+    final Recipes =await FirebaseFirestore.instance.collection('Recipes').where('Cuisine',isEqualTo: Cuisine).get();
+    
 
+    return ;
   }
 
   }

@@ -2,6 +2,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled/screens/home/cook.dart';
+import 'package:untitled/screens/home/cusines.dart';
+import 'package:untitled/screens/home/inventory/inventoryMain.dart';
 import 'package:untitled/screens/home/side_menu.dart';
 import 'package:untitled/services/auth.dart';
 import 'package:untitled/services/database.dart';
@@ -15,6 +17,7 @@ class home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      
       drawer:sideMenu(),
       appBar: AppBar(
         // title: Text('Recipe Hub'),
@@ -22,7 +25,10 @@ class home extends StatelessWidget {
 
         actions: [
           IconButton(
-              onPressed: () {},
+              onPressed: () {
+                 
+                Navigator.push(context,MaterialPageRoute(builder:(context)=>Inventory() ));
+              },
               icon: Icon(
                 Icons.add_shopping_cart,
                 color: Colors.black,
@@ -75,23 +81,11 @@ class home extends StatelessWidget {
                       children: [
                         InkWell(
                           onTap: ()async{
-                            // final Recipe =await FirebaseFirestore.instance.collection('Recipes').doc(RecipeId).get();
+                            //  recipes R=await DatabaseService(uid:user!.uid).getRecipe(RecipeId:RecipeId) ;
+                            
+                            // Navigator.push(context,MaterialPageRoute(builder: (context) =>  cookPage(currentRecipe:R)));
 
-    
-                            //  int Calories= Recipe.data()!['Calories'];
-                            //  String Cuisine= Recipe.data()!['Cuisine'];
-                            //  String Time= Recipe.data()!['Time'];
-                            //  String Title= Recipe.data()!['Title'];
-                            //  String img= Recipe.data()!['img'];
-                            //  bool isVeg=Recipe.data()!['isVeg'];
-                            //  List preparation =Recipe.data()!['Preparation'];
-                            //  Map <String,dynamic> ingredients=Recipe.data()!['ingre'];
-                             
-                             recipes R=await DatabaseService(uid:user!.uid).getRecipe(RecipeId:RecipeId) ;
-                            //  recipes recipe=R as recipes;
-                            //  print(R.calories);
-                            //  recipes curRecipe=recipes(Calories: Calories,Cuisine: Cuisine,Time: Time,Title: Title,)
-                            Navigator.push(context,MaterialPageRoute(builder: (context) =>  cookPage(currentRecipe:R)));
+                            Navigator.push(context,MaterialPageRoute(builder:(context)=>CuisinesPage(Cuisine:"Indian") ));
                             },
                           child: Container(
                             width: 100,
@@ -121,41 +115,54 @@ class home extends StatelessWidget {
                     SizedBox(
                       width: 10,
                     ),
-                    Column(
-                      children: [
-                        Container(
-                          width: 100,
-                          height: 100,
-                          decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
-                              image: new DecorationImage(
-                                  image: AssetImage('assets/american.jpg'),
-                                  fit: BoxFit.cover)),
-                        ),
-                        SizedBox(height: 5),
-                        Center(
-                            child: Text("American",
-                                style: TextStyle(
-                                  // fontSize: 12,
-                                  fontWeight: FontWeight.w500,
-                                ))),
-                      ],
+                    InkWell(
+                      onTap: () {
+                        // DatabaseService(uid:user!.uid).getRecipeWithCuisine(Cuisine: "American");
+                        Navigator.push(context,MaterialPageRoute(builder:(context)=>CuisinesPage(Cuisine:"American") ));
+                         
+                      },
+                      child: Column(
+                        children: [
+                          Container(
+                            width: 100,
+                            height: 100,
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10)),
+                                image: new DecorationImage(
+                                    image: AssetImage('assets/american.jpg'),
+                                    fit: BoxFit.cover)),
+                          ),
+                          SizedBox(height: 5),
+                          Center(
+                              child: Text("American",
+                                  style: TextStyle(
+                                    // fontSize: 12,
+                                    fontWeight: FontWeight.w500,
+                                  ))),
+                        ],
+                      ),
                     ),
                     SizedBox(
                       width: 10,
                     ),
                     Column(
                       children: [
-                        Container(
-                          width: 100,
-                          height: 100,
-                          decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
-                              image: new DecorationImage(
-                                  image: AssetImage('assets/chinese.jpg'),
-                                  fit: BoxFit.cover)),
+                        InkWell(
+                          onTap: () {Navigator.push(context,MaterialPageRoute(builder:(context)=>CuisinesPage(Cuisine:"Chinese") ));
+                            // Navigator.push(context,MaterialPageRoute(builder:(context)=>CuisinesPage() ));
+                             
+                          },
+                          child: Container(
+                            width: 100,
+                            height: 100,
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10)),
+                                image: new DecorationImage(
+                                    image: AssetImage('assets/chinese.jpg'),
+                                    fit: BoxFit.cover)),
+                          ),
                         ),
                         SizedBox(height: 5),
                         Center(
@@ -171,15 +178,20 @@ class home extends StatelessWidget {
                     ),
                     Column(
                       children: [
-                        Container(
-                          width: 100,
-                          height: 100,
-                          decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
-                              image: new DecorationImage(
-                                  image: AssetImage('assets/italian.jpeg'),
-                                  fit: BoxFit.cover)),
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(context,MaterialPageRoute(builder:(context)=>CuisinesPage(Cuisine:"Italian") ));
+                          },
+                          child: Container(
+                            width: 100,
+                            height: 100,
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10)),
+                                image: new DecorationImage(
+                                    image: AssetImage('assets/italian.jpeg'),
+                                    fit: BoxFit.cover)),
+                          ),
                         ),
                         SizedBox(height: 5),
                         Center(
@@ -197,15 +209,18 @@ class home extends StatelessWidget {
                     ),
                     Column(
                       children: [
-                        Container(
-                          width: 100,
-                          height: 100,
-                          decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
-                              image: new DecorationImage(
-                                  image: AssetImage('assets/japanese.jpg'),
-                                  fit: BoxFit.cover)),
+                        InkWell(
+                          onTap: () => Navigator.push(context,MaterialPageRoute(builder:(context)=>CuisinesPage(Cuisine:"Japanese") )),
+                          child: Container(
+                            width: 100,
+                            height: 100,
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10)),
+                                image: new DecorationImage(
+                                    image: AssetImage('assets/japanese.jpg'),
+                                    fit: BoxFit.cover)),
+                          ),
                         ),
                         SizedBox(
                           height: 5,

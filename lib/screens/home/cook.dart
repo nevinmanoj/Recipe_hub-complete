@@ -15,7 +15,7 @@ import '../../services/database.dart';
 final FirebaseAuth _auth =FirebaseAuth.instance;
 
 class cookPage extends StatefulWidget {
-     recipes currentRecipe;
+     recipeModel currentRecipe;
     //  int Calories;
     //  String Cuisine;
     //  String Time;
