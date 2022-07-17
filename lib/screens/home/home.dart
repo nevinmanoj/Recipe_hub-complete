@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:untitled/screens/home/cook.dart';
 import 'package:untitled/screens/home/side_menu.dart';
 import 'package:untitled/services/auth.dart';
+import 'package:untitled/services/database.dart';
 import 'package:untitled/shared/recipe.dart';
 
+List rec=["sKEn7VZCm68ILeDtnoFq","IiDYLzKVq74fx6leQgbk","JRacC7ZKDP8mjyKLHrdc"] ;
 
 
 class home extends StatelessWidget {
-  String RecipeId="u3bKB7glVBnYSaX5KDSC";
+  String RecipeId=rec[1];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,26 +75,23 @@ class home extends StatelessWidget {
                       children: [
                         InkWell(
                           onTap: ()async{
-                            final Recipe =await FirebaseFirestore.instance.collection('Recipes').doc(RecipeId).get();
+                            // final Recipe =await FirebaseFirestore.instance.collection('Recipes').doc(RecipeId).get();
 
     
-                             int Calories= Recipe.data()!['Calories'];
-                             String Cuisine= Recipe.data()!['Cuisine'];
-                             String Time= Recipe.data()!['Time'];
-                             String Title= Recipe.data()!['Title'];
-                             String img= Recipe.data()!['img'];
-                             bool isVeg=Recipe.data()!['isVeg'];
-                             List preparation =Recipe.data()!['Preparation'];
-                             Map <String,dynamic> ingredients=Recipe.data()!['ingre'];
-                             print(ingredients);
+                            //  int Calories= Recipe.data()!['Calories'];
+                            //  String Cuisine= Recipe.data()!['Cuisine'];
+                            //  String Time= Recipe.data()!['Time'];
+                            //  String Title= Recipe.data()!['Title'];
+                            //  String img= Recipe.data()!['img'];
+                            //  bool isVeg=Recipe.data()!['isVeg'];
+                            //  List preparation =Recipe.data()!['Preparation'];
+                            //  Map <String,dynamic> ingredients=Recipe.data()!['ingre'];
                              
-
+                             recipes R=await DatabaseService(uid:user!.uid).getRecipe(RecipeId:RecipeId) ;
+                            //  recipes recipe=R as recipes;
+                            //  print(R.calories);
                             //  recipes curRecipe=recipes(Calories: Calories,Cuisine: Cuisine,Time: Time,Title: Title,)
-
-                            Navigator.push(context,MaterialPageRoute(builder: (context) =>  cookPage(Cuisine: Cuisine,Calories: Calories,
-                            Time: Time,Title: Title,img: img,isveg: isVeg,
-                            preparation: preparation,ingredients: ingredients,
-                            )));
+                            Navigator.push(context,MaterialPageRoute(builder: (context) =>  cookPage(currentRecipe:R)));
                             },
                           child: Container(
                             width: 100,

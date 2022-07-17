@@ -1,17 +1,19 @@
 // ignore: camel_case_types
 class recipes{
 
-  int Calories;
-  String Cuisine;
-  String Time="";
-  String Title="";
-  String img="";
+  bool isLike;
+  String RecipeId;
+  int calories;
+  String cuisine;
+  String time;
+  String title;
+  String img;
   bool isveg;
-  List <String> Preparation=[];
-  Map <String,String> ingredients =Map();
+  List preparation=[];
+  Map <String,dynamic> ingredients =Map();
 
-  recipes({required this.Calories,required this.Cuisine,required this.Time,required this.Title,
-  required this.img,required this.Preparation,required this.ingredients,required this.isveg});
+  recipes({required this.calories,required this.cuisine,required this.time,required this.title,required this.RecipeId,
+  required this.img,required this.preparation,required this.ingredients,required this.isveg,required this.isLike});
 
 }
 

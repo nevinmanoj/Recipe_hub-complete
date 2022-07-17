@@ -63,8 +63,8 @@ class sideMenu extends StatelessWidget {
             onTap: () => {},
           ),
           ListTile(
-            leading: Icon(Icons.border_color),
-            title: Text('Feedback'),
+            leading: Icon(Icons.favorite),
+            title: Text('Favorites'),
             onTap: () => {Navigator.of(context).pop()},
           ),
           ListTile(

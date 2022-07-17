@@ -41,8 +41,10 @@ class AuthSerivice{
       User? user=result.user;
 
       //
-      await DatabaseService(uid: user!.uid).updateUserName(name);
+      await DatabaseService(uid: user!.uid).createFavorites();
+      await DatabaseService(uid: user.uid).updateUserName(name);
       await DatabaseService(uid: user.uid).updateUserPhone("");
+      
       return user;
 
     }catch(e){print(e.toString());return null;}
