@@ -11,6 +11,21 @@ class Inventory extends StatefulWidget {
 class _inventoryState extends State<Inventory> {
   @override
   Widget build(BuildContext context) {
+    List<String> invent = [
+  'Fruits',
+  'Vegetables',
+  'Frozen',
+  'Dairy',
+  'Grains',
+  'Oils And Sauces',
+  'Spices',
+  'Juices',
+  'Eggs',
+  'Other',
+  'pranoy',
+];
+
+
     double wt = MediaQuery.of(context).size.width;
     double ht = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -25,25 +40,7 @@ class _inventoryState extends State<Inventory> {
       body: Stack(
         children: [
           Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            // Container(
-            //   width: wt,
-            //   color: appYellow,
-            //   height: 0.1 * ht,
-            //   child: Row(
-            //     mainAxisAlignment: MainAxisAlignment.start,
-            //     crossAxisAlignment: CrossAxisAlignment.stretch,
-            //     children: [
-            //       // Container(
-            //       //   width: 100,
-            //       //   child: TextButton.icon(
-            //       //     onPressed: () {Navigator.pop(context);},
-            //       //     icon: const Icon(Icons.arrow_back_ios),
-            //       //     label: const Text('Back'),
-            //       //   ),
-            //       // )
-            //     ],
-            //   ),
-            // ),
+            
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
@@ -101,11 +98,33 @@ class _inventoryState extends State<Inventory> {
                             padding: const EdgeInsets.only(left: 10),
                             height: 0.1 * ht,
                             margin: const EdgeInsets.only(bottom: 4),
-                            color: Colors.grey,
+                            // color: Colors.grey,
+                           decoration:BoxDecoration(image: DecorationImage(image:NetworkImage("https://i.imgur.com/WmOGEmu.jpg"),fit: BoxFit.cover )),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(invent[index]),
+                                Stack(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(15,0 , 0, 0),
+                                      child: Text(invent[index],style: TextStyle(fontWeight:FontWeight.w500,
+                                      foreground: Paint()
+                                          ..style = PaintingStyle.stroke
+                                          ..strokeWidth = 3
+                                           ..color = Color.fromARGB(255, 0, 0, 0),
+                                      fontSize: 20,),),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(15,0 , 0, 0),
+                                      child: Text(invent[index],style: TextStyle(fontWeight:FontWeight.w500,
+                                      foreground: Paint()
+                                          ..style = PaintingStyle.fill
+                                          ..strokeWidth = 1
+                                           ..color = Colors.white,
+                                      fontSize: 20,),),
+                                    ),
+                                  ],
+                                ),
                                 IconButton(onPressed: (){
                                   Navigator.push(
                                       context,
@@ -131,17 +150,4 @@ class _inventoryState extends State<Inventory> {
   }
 }
 
-List<String> invent = [
-  'Fruits',
-  'Vegetables',
-  'Frozen',
-  'Dairy',
-  'Grains',
-  'Juices Oils And Sauces',
-  'Spices',
-  'adarsh',
-  'nevin',
-  'akhil',
-  'pranoy',
-];
 

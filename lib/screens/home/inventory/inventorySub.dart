@@ -8,6 +8,19 @@ class on_tap_inventory extends StatelessWidget {
   @override
 
   Widget build(BuildContext context) {
+    List<String> invent = [
+  'Fruits',
+  'Vegetables',
+  'Frozen',
+  'Dairy',
+  'Grains',
+  'Juices Oils And Sauces',
+  'Spices',
+  'adarsh',
+  
+  'akhil',
+  'pranoy',
+];
     double wt = MediaQuery.of(context).size.width;
     double ht = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -115,18 +128,6 @@ class on_tap_inventory extends StatelessWidget {
   }
 }
 
-List<String> invent = [
-  'Fruits',
-  'Vegetables',
-  'Frozen',
-  'Dairy',
-  'Grains',
-  'Juices Oils And Sauces',
-  'Spices',
-  'adarsh',
-  'nevin',
-  'akhil',
-  'pranoy',
-];
+
 
 

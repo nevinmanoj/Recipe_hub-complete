@@ -12,7 +12,7 @@ class DatabaseService{
   final CollectionReference Usercollection =FirebaseFirestore.instance.collection('userInfo');
   
   Future updateUserName(String Name)async{
-    return await Usercollection.doc(uid).set({'Name':Name,},SetOptions(merge: true));
+    return await FirebaseFirestore.instance.collection('userInfo').doc(uid).set({'Name':Name,},SetOptions(merge: true));
   }
 
   Future updateUserPhone(String PhoneNumber)async{
@@ -27,16 +27,16 @@ class DatabaseService{
   Future updateFavorites({required String RecipeId,required bool isLike})async{
     // List fav=[RecipeId];
     // return await Usercollection.doc(uid).update({"Favorites": ,},SetOptions(merge:true));
-    if(isLike)
-    return await Usercollection.doc(uid).update({"Favorites": FieldValue.arrayUnion([RecipeId]),});
-    else
-    return await Usercollection.doc(uid).update({ "Favorites": FieldValue.arrayRemove([RecipeId])});
+    if(isLike) {
+      return await Usercollection.doc(uid).update({"Favorites": FieldValue.arrayUnion([RecipeId]),});
+    } else {
+      return await Usercollection.doc(uid).update({ "Favorites": FieldValue.arrayRemove([RecipeId])});
+    }
 
   }
   Future getRecipe({required String RecipeId}) async{
 
     final Recipe =await FirebaseFirestore.instance.collection('Recipes').doc(RecipeId).get();
-    // final fav=FirebaseFirestore.instance.collection('userInfo').where("Favorites",arrayContains: RecipeId) ;
     final user =await FirebaseFirestore.instance.collection('userInfo').doc(uid).get();
    
         List favorites=user.data()!['Favorites'];
@@ -54,37 +54,24 @@ class DatabaseService{
          img: img, preparation: preparation, ingredients: ingredients, isveg:isVeg,RecipeId:RecipeId,isLike: isLike);
 
   }
-  Future getRecipeWithCuisine({required String Cuisine})async{
-    final Recipes =await FirebaseFirestore.instance.collection('Recipes').where('Cuisine',isEqualTo: Cuisine).get();
-    
 
-    return ;
+  Future getFavoriteList()async{
+    final user =await FirebaseFirestore.instance.collection('userInfo').doc(uid).get();
+   
+        List favorites=user.data()!['Favorites'];
+        List <recipeModel> fav=[];
+        for(int j=0;j<favorites.length;j++) {
+          
+          fav.add(await getRecipe(RecipeId: favorites[j]));
+
+        }
+        
+        return fav;
+
+
   }
+  
 
   }
-
-//   class RecipeService{
-// final String RecipeId;
-// RecipeService({required this.RecipeId});
-
-
-// Future getRecipe() async{
-
-//     final Recipe =await FirebaseFirestore.instance.collection('Recipes').doc(RecipeId).get();
-
-    
-//         int Calories= Recipe.data()!['Calories'];
-//         String Cuisine= Recipe.data()!['Cuisine'];
-//         String Time= Recipe.data()!['Time'];
-//         String Title= Recipe.data()!['Title'];
-//         String img= Recipe.data()!['img'];
-//         bool isVeg=Recipe.data()!['isVeg'];
-//         List preparation =Recipe.data()!['Preparation'];
-//         Map <String,dynamic> ingredients=Recipe.data()!['ingre'];
-//         return recipes(calories: Calories, cuisine: Cuisine, time: Time, title: Title,
-//          img: img, preparation: preparation, ingredients: ingredients, isveg:isVeg,RecipeId:RecipeId);
-
-
-//   }}
 
 

@@ -7,8 +7,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled/screens/home/cook.dart';
+import 'package:untitled/screens/home/sideMenu/Favorites.dart';
 import 'package:untitled/services/auth.dart';
-import 'profile.dart';
+import 'package:untitled/services/database.dart';
+import 'package:untitled/shared/Colors.dart';
+import 'package:untitled/shared/recipe.dart';
+import 'sideMenu/profile.dart';
 final FirebaseAuth _auth =FirebaseAuth.instance;
 final User? user = _auth.currentUser;
 
@@ -33,7 +37,7 @@ class sideMenu extends StatelessWidget {
               
               
               
-                color: Color(0xFFF8DA19),
+                color: appYellow,
                 // image: DecorationImage(
                 //     fit: BoxFit.fill,
                 //     // image: AssetImage('assets/images/cover.jpg')
@@ -65,7 +69,12 @@ class sideMenu extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.favorite),
             title: Text('Favorites'),
-            onTap: () => {Navigator.of(context).pop()},
+            onTap: () async {
+
+              List<recipeModel> R=await DatabaseService(uid: user!.uid).getFavoriteList();
+              Navigator.push(context,MaterialPageRoute(builder: (context) =>  Favorites(R: R)));
+
+            },
           ),
           ListTile(
             leading: Icon(Icons.exit_to_app),

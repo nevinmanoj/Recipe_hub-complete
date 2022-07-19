@@ -16,18 +16,7 @@ final FirebaseAuth _auth =FirebaseAuth.instance;
 
 class cookPage extends StatefulWidget {
      recipeModel currentRecipe;
-    //  int Calories;
-    //  String Cuisine;
-    //  String Time;
-    //  String Title;
-    //  String img;
-    //  bool isveg;
-    //  List preparation;
-    //  Map <String,dynamic> ingredients;
-  // cookPage({required this.Calories,required this.Cuisine,required this.Time,required this.Title,
-  // required this.img,required this.isveg,
-  //  required this.preparation,required this.ingredients
-  // });
+  
 
   cookPage({required this.currentRecipe});
 
@@ -40,6 +29,8 @@ class _cookPageState extends State<cookPage> {
     
   @override
   Widget build(BuildContext context) {
+    var keys = widget.currentRecipe.ingredients.keys.toList();
+    
     
     
 
@@ -158,6 +149,8 @@ child: Center(child: Text(" Confirm to Update Inventory ")),
                               ),
                       Center(child: Text("INGREDIENTS",style: TextStyle(fontSize: 18,fontWeight:FontWeight.w500,))),
                     //ingredients tiles
+
+                    
                       Container(
                                 width: wt,
                                 child: ListView.builder(
@@ -167,12 +160,13 @@ child: Center(child: Text(" Confirm to Update Inventory ")),
                                   itemBuilder: (BuildContext context, int ind) {
                                     return Padding(
                                       padding: const EdgeInsets.all(10.0),
-                                      child: Text("${ind+1}:${widget.currentRecipe.ingredients[ind]}",style: TextStyle(color:Colors.grey[800],fontWeight:FontWeight.w300 ),),
+                                      child: Text("${ind+1}.${keys[ind]}: ${widget.currentRecipe.ingredients[keys[ind]]} ",style: TextStyle(color:Colors.grey[800],fontWeight:FontWeight.w300 ),),
                                     );
                                   },
                                 ),
                               ),
                       Center(child: Text("PREPARATION",style: TextStyle(fontSize: 18,fontWeight:FontWeight.w500,))),
+                      
                     
                       
                        Container(
@@ -184,7 +178,7 @@ child: Center(child: Text(" Confirm to Update Inventory ")),
                                   itemBuilder: (BuildContext context, int index) {
                                     return Padding(
                                       padding: const EdgeInsets.all(10.0),
-                                      child: Text("${index+1}:${widget.currentRecipe.preparation[index]}",style: TextStyle(color:Colors.grey[800],fontWeight:FontWeight.w300 ),),
+                                      child: Text("${index+1}. ${widget.currentRecipe.preparation[index]}",style: TextStyle(color:Colors.grey[800],fontWeight:FontWeight.w300 ),),
                                     );
                                   },
                                 ),
