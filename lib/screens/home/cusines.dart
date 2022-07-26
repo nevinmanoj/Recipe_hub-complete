@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:untitled/screens/home/cook.dart';
 import 'package:untitled/screens/home/side_menu.dart';
 import 'package:untitled/services/database.dart';
-import 'package:untitled/shared/Colors.dart';
-import 'package:untitled/shared/recipe.dart';
+import 'package:untitled/shared/Constants.dart';
+import 'package:untitled/shared/classes.dart';
 class CuisinesPage extends StatefulWidget {
   String Cuisine;
   CuisinesPage({required this.Cuisine});

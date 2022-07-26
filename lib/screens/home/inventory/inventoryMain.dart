@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:untitled/screens/home/inventory/addItem.dart';
 import 'package:untitled/screens/home/inventory/inventorySub.dart';
-import 'package:untitled/shared/Colors.dart';
+import 'package:untitled/shared/Constants.dart';
+
 class Inventory extends StatefulWidget {
   const Inventory({Key? key}) : super(key: key);
 
@@ -11,24 +13,13 @@ class Inventory extends StatefulWidget {
 class _inventoryState extends State<Inventory> {
   @override
   Widget build(BuildContext context) {
-    List<String> invent = [
-  'Fruits',
-  'Vegetables',
-  'Frozen',
-  'Dairy',
-  'Grains',
-  'Oils And Sauces',
-  'Spices',
-  'Juices',
-  'Eggs',
-  'Other',
-  'pranoy',
-];
+    
 
 
     double wt = MediaQuery.of(context).size.width;
     double ht = MediaQuery.of(context).size.height;
     return Scaffold(
+       resizeToAvoidBottomInset: false,
        appBar: 
       // PreferredSize(
         // preferredSize: Size.fromHeight(0.0), // here the desired height
@@ -64,6 +55,12 @@ class _inventoryState extends State<Inventory> {
                     border: InputBorder.none),
               ),
             ),
+
+            
+            AddItem(),
+
+
+
             Expanded(
               child: ListView(
                 shrinkWrap: true,
@@ -82,7 +79,7 @@ class _inventoryState extends State<Inventory> {
                   Container(
                     width: wt,
                     child: ListView.builder(
-                      itemCount: invent.length,
+                      itemCount: categories.length,
                       physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemBuilder: (BuildContext context, int index) {
@@ -90,9 +87,8 @@ class _inventoryState extends State<Inventory> {
                           onTap: (){
                             Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) =>  on_tap_inventory(foodItem:invent[index]))
+                                MaterialPageRoute(builder: (context) =>  on_tap_inventory(foodItem:categories[index]))
                             );
-
                           },
                           child: Container(
                             padding: const EdgeInsets.only(left: 10),
@@ -107,7 +103,7 @@ class _inventoryState extends State<Inventory> {
                                   children: [
                                     Padding(
                                       padding: const EdgeInsets.fromLTRB(15,0 , 0, 0),
-                                      child: Text(invent[index],style: TextStyle(fontWeight:FontWeight.w500,
+                                      child: Text(categories[index],style: TextStyle(fontWeight:FontWeight.w500,
                                       foreground: Paint()
                                           ..style = PaintingStyle.stroke
                                           ..strokeWidth = 3
@@ -116,7 +112,7 @@ class _inventoryState extends State<Inventory> {
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.fromLTRB(15,0 , 0, 0),
-                                      child: Text(invent[index],style: TextStyle(fontWeight:FontWeight.w500,
+                                      child: Text(categories[index],style: TextStyle(fontWeight:FontWeight.w500,
                                       foreground: Paint()
                                           ..style = PaintingStyle.fill
                                           ..strokeWidth = 1
@@ -128,7 +124,7 @@ class _inventoryState extends State<Inventory> {
                                 IconButton(onPressed: (){
                                   Navigator.push(
                                       context,
-                                      MaterialPageRoute(builder: (context) =>  on_tap_inventory(foodItem:invent[index]))
+                                      MaterialPageRoute(builder: (context) =>  on_tap_inventory(foodItem:categories[index]))
                                   );
                                 }
                                     , icon: Icon(Icons.keyboard_arrow_right_rounded)),

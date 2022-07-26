@@ -7,7 +7,7 @@ import 'package:untitled/screens/home/inventory/inventoryMain.dart';
 import 'package:untitled/screens/home/side_menu.dart';
 import 'package:untitled/services/auth.dart';
 import 'package:untitled/services/database.dart';
-import 'package:untitled/shared/recipe.dart';
+import 'package:untitled/shared/classes.dart';
 
 List rec=["sKEn7VZCm68ILeDtnoFq","IiDYLzKVq74fx6leQgbk","JRacC7ZKDP8mjyKLHrdc"] ;
 

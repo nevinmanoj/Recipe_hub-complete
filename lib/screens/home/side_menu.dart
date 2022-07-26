@@ -6,12 +6,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:untitled/screens/home/cook.dart';
+
 import 'package:untitled/screens/home/sideMenu/Favorites.dart';
-import 'package:untitled/services/auth.dart';
+
 import 'package:untitled/services/database.dart';
-import 'package:untitled/shared/Colors.dart';
-import 'package:untitled/shared/recipe.dart';
+import 'package:untitled/shared/Constants.dart';
+import 'package:untitled/shared/classes.dart';
 import 'sideMenu/profile.dart';
 final FirebaseAuth _auth =FirebaseAuth.instance;
 final User? user = _auth.currentUser;

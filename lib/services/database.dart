@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:untitled/shared/recipe.dart';
+import 'package:untitled/shared/Constants.dart';
+import 'package:untitled/shared/classes.dart';
 
 class DatabaseService{
 
@@ -18,6 +19,13 @@ class DatabaseService{
   Future updateUserPhone(String PhoneNumber)async{
     return await Usercollection.doc(uid).set({'PhoneNumber':PhoneNumber,},SetOptions(merge:true));
   }
+
+  // Future createInventory() async
+  // {
+  //   for(int i=0;i<categories.length;i++){
+  //   await FirebaseFirestore.instance.collection('inventory').doc(uid).set({'${categories[i]}':[],},SetOptions(merge: true));}
+
+  // }
   Future createFavorites()async
   {
      return await Usercollection.doc(uid).update({'Favorites':[],});

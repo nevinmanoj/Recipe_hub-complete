@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:untitled/shared/Colors.dart';
+import 'package:untitled/shared/Constants.dart';
 
 class on_tap_inventory extends StatelessWidget {
   String foodItem;

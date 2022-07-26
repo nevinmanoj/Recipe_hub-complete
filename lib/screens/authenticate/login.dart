@@ -29,7 +29,7 @@ class _loginState extends State<login> {
   Widget build(BuildContext context) {
     double ht= MediaQuery.of(context).size.height;
     double wt= MediaQuery.of(context).size.width;
-    return Scaffold(
+    return Scaffold(resizeToAvoidBottomInset: false,
       body:
         
          Stack(
