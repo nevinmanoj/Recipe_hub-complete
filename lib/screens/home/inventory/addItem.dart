@@ -1,10 +1,19 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:untitled/services/database.dart';
 import 'package:untitled/shared/Constants.dart';
-String ?itemName="";
-String ?newcategory="";
-String ?newUnit="";
+import 'package:untitled/shared/classes.dart';
+String itemName="";
+String newcategory=categories[0];
+String newUnit=units[0];
+String qty="";
+double quantity=0;
+
+final FirebaseAuth _auth =FirebaseAuth.instance;
+final User? user = _auth.currentUser;
 
 class AddItem extends StatefulWidget {
   const AddItem({Key? key}) : super(key: key);
@@ -20,7 +29,14 @@ class _AddItemState extends State<AddItem> {
      double wt = MediaQuery.of(context).size.width;
     double ht = MediaQuery.of(context).size.height;
     return ElevatedButton(child: Text("ADD Item"),
-    onPressed: () {
+    onPressed: () {setState(() {
+      itemName="";
+ newcategory=categories[0];
+ newUnit=units[0];
+ qty="";
+ quantity=0;
+      
+    });
       showDialog(
         context:context,
         builder:(BuildContext context){
@@ -44,8 +60,12 @@ class _AddItemState extends State<AddItem> {
                                    onPressed: () async {
                                     if(_formKey.currentState!.validate())
                                   {
-                                    // setState(()=>loading=true);
+                                    quantity=double.parse(qty);
                                     
+                                    Item I=Item(name: itemName, qty: quantity , unit: newUnit, category: newcategory);
+                                   final r=await DatabaseService(uid: user!.uid).addInventory(I);
+                                   
+                                   Navigator.pop(context);
                                 
                                     } },
                                    style:ButtonStyle(
@@ -111,6 +131,7 @@ class _ItemNameState extends State<ItemName> {
                     },
                     validator: (value) =>value!.isEmpty?' Name cannot be empty':null,
                     keyboardType: TextInputType.name,
+                    
                     decoration: InputDecoration(
                                     border: InputBorder.none,
                     hintStyle: TextStyle(color: Colors.grey.withOpacity(0.8)),
@@ -157,7 +178,7 @@ class _CategoryState extends State<Category> {
                       hint: Text("Category of Item",style:TextStyle(color: Colors.grey.withOpacity(0.8)) ,),
                       onChanged: (Value) {
                         setState(() {
-                          newcategory= Value;
+                          newcategory= Value!;
                         });
                       },
                       
@@ -207,8 +228,9 @@ class _ItemQuantityState extends State<ItemQuantity> {
                       padding: const EdgeInsets.fromLTRB(10,5,10,5),
                       child: TextFormField(
                         onChanged: (value) {
-                          itemName=value;
+                         qty=value;
                         },
+                        
                         validator: (value) =>value!.isEmpty?'quantity must not be null':null,
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
@@ -245,7 +267,7 @@ class _ItemQuantityState extends State<ItemQuantity> {
                       hint: Text("Unit",style:TextStyle(color: Colors.grey.withOpacity(0.8)) ,),
                       onChanged: (Value) {
                         setState(() {
-                          newUnit= Value;
+                          newUnit= Value!;
                         });
                       },
                       
@@ -261,10 +283,6 @@ class _ItemQuantityState extends State<ItemQuantity> {
                 ),
 
   )
-
-
-
-
 
 
       ],

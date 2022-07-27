@@ -24,11 +24,11 @@ class _CuisinesPageState extends State<CuisinesPage> {
       
       appBar: AppBar(
         title: Padding(
-          padding:  EdgeInsets.fromLTRB(wt*0.22, 0, 0, 0),
+          padding:  EdgeInsets.fromLTRB(wt*0.2, 0, 0, 0),
           child: Text("${widget.Cuisine} Cuisine",
-           style: TextStyle(fontSize: 20.0,
+           style: TextStyle(fontSize: 23.0,
                fontWeight: FontWeight.bold,
-               color: Colors.white),
+               color: Color.fromARGB(255, 79, 79, 79)),
               ),
         ),
         backgroundColor: appYellow,

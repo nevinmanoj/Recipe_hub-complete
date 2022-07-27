@@ -17,18 +17,33 @@ class DatabaseService{
   }
 
   Future updateUserPhone(String PhoneNumber)async{
-    return await Usercollection.doc(uid).set({'PhoneNumber':PhoneNumber,},SetOptions(merge:true));
+    return await FirebaseFirestore.instance.collection('userInfo').doc(uid).set({'PhoneNumber':PhoneNumber,},SetOptions(merge:true));
   }
 
-  // Future createInventory() async
-  // {
-  //   for(int i=0;i<categories.length;i++){
-  //   await FirebaseFirestore.instance.collection('inventory').doc(uid).set({'${categories[i]}':[],},SetOptions(merge: true));}
+  Future createInventory() async
+  {
+    // await FirebaseFirestore.instance.collection('userInfo/inventory').doc(uid).set({categories[i]:{},},SetOptions(merge: true));
+    for(int i=0;i<categories.length;i++){
+    await FirebaseFirestore.instance.collection('userInfo/${uid}/inventory').doc(categories[i]).set({},SetOptions(merge: true));
+    }
 
-  // }
+  }
+  Future addInventory(Item item)async{
+    //  return await FirebaseFirestore.instance.collection('inventory').doc(uid).update();
+     await FirebaseFirestore.instance.collection('userInfo/${uid}/inventory').doc(item.category).set({
+
+      '${item.name}':[item.qty,item.unit]
+         
+  
+},SetOptions(merge: true));
+
+
+  }
+
+
   Future createFavorites()async
   {
-     return await Usercollection.doc(uid).update({'Favorites':[],});
+     return await FirebaseFirestore.instance.collection('userInfo').doc(uid).update({'Favorites':[],});
   }
 
 
@@ -36,9 +51,9 @@ class DatabaseService{
     // List fav=[RecipeId];
     // return await Usercollection.doc(uid).update({"Favorites": ,},SetOptions(merge:true));
     if(isLike) {
-      return await Usercollection.doc(uid).update({"Favorites": FieldValue.arrayUnion([RecipeId]),});
+      return await FirebaseFirestore.instance.collection('userInfo').doc(uid).update({"Favorites": FieldValue.arrayUnion([RecipeId]),});
     } else {
-      return await Usercollection.doc(uid).update({ "Favorites": FieldValue.arrayRemove([RecipeId])});
+      return await FirebaseFirestore.instance.collection('userInfo').doc(uid).update({ "Favorites": FieldValue.arrayRemove([RecipeId])});
     }
 
   }

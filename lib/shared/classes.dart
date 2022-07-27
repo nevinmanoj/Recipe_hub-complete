@@ -20,10 +20,11 @@ class recipeModel{
 class Item{
   
   String name;
-  int qty;
+  double qty;
   String unit;
+  String category;
 
-  Item({required this.name,required this.qty,required this.unit});
+  Item({required this.name,required this.qty,required this.unit,required this.category});
 
 
 }
