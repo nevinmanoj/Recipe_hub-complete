@@ -13,25 +13,21 @@ class Inventory extends StatefulWidget {
 class _inventoryState extends State<Inventory> {
   @override
   Widget build(BuildContext context) {
-    
-
-
     double wt = MediaQuery.of(context).size.width;
     double ht = MediaQuery.of(context).size.height;
     return Scaffold(
-       resizeToAvoidBottomInset: false,
-       appBar: 
-      // PreferredSize(
-        // preferredSize: Size.fromHeight(0.0), // here the desired height
-        // child:
-         AppBar(
-          backgroundColor: appYellow,
-        ),
+      resizeToAvoidBottomInset: false,
+      appBar:
+          // PreferredSize(
+          // preferredSize: Size.fromHeight(0.0), // here the desired height
+          // child:
+          AppBar(
+        backgroundColor: appYellow,
+      ),
       // ),
       body: Stack(
         children: [
           Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
@@ -55,18 +51,16 @@ class _inventoryState extends State<Inventory> {
                     border: InputBorder.none),
               ),
             ),
-
-            
+            Container(
+              height: 15,
+            ),
             AddItem(),
-
-
-
             Expanded(
               child: ListView(
                 shrinkWrap: true,
                 children: [
                   Container(
-                    height: 100,
+                    height: 50,
                   ),
                   Container(
                     padding: EdgeInsets.only(left: 10),
@@ -84,51 +78,74 @@ class _inventoryState extends State<Inventory> {
                       shrinkWrap: true,
                       itemBuilder: (BuildContext context, int index) {
                         return InkWell(
-                          onTap: (){
+                          onTap: () {
                             Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) =>  on_tap_inventory(foodItem:categories[index]))
-                            );
+                                MaterialPageRoute(
+                                    builder: (context) => on_tap_inventory(
+                                        foodItem: categories[index])));
                           },
                           child: Container(
                             padding: const EdgeInsets.only(left: 10),
                             height: 0.1 * ht,
                             margin: const EdgeInsets.only(bottom: 4),
                             // color: Colors.grey,
-                           decoration:BoxDecoration(image: DecorationImage(image:NetworkImage("https://i.imgur.com/WmOGEmu.jpg"),fit: BoxFit.cover )),
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: NetworkImage(images[index]),
+                                    fit: BoxFit.cover)),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Stack(
                                   children: [
                                     Padding(
-                                      padding: const EdgeInsets.fromLTRB(15,0 , 0, 0),
-                                      child: Text(categories[index],style: TextStyle(fontWeight:FontWeight.w500,
-                                      foreground: Paint()
-                                          ..style = PaintingStyle.stroke
-                                          ..strokeWidth = 3
-                                           ..color = Color.fromARGB(255, 0, 0, 0),
-                                      fontSize: 20,),),
+                                      padding: const EdgeInsets.fromLTRB(
+                                          15, 0, 0, 0),
+                                      child: Text(
+                                        categories[index],
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          foreground: Paint()
+                                            ..style = PaintingStyle.stroke
+                                            ..strokeWidth = 3
+                                            ..color =
+                                                Color.fromARGB(255, 0, 0, 0),
+                                          fontSize: 20,
+                                        ),
+                                      ),
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.fromLTRB(15,0 , 0, 0),
-                                      child: Text(categories[index],style: TextStyle(fontWeight:FontWeight.w500,
-                                      foreground: Paint()
-                                          ..style = PaintingStyle.fill
-                                          ..strokeWidth = 1
-                                           ..color = Colors.white,
-                                      fontSize: 20,),),
+                                      padding: const EdgeInsets.fromLTRB(
+                                          15, 0, 0, 0),
+                                      child: Text(
+                                        categories[index],
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          foreground: Paint()
+                                            ..style = PaintingStyle.fill
+                                            ..strokeWidth = 1
+                                            ..color = Colors.white,
+                                          fontSize: 20,
+                                        ),
+                                      ),
                                     ),
                                   ],
                                 ),
-                                IconButton(onPressed: (){
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(builder: (context) =>  on_tap_inventory(foodItem:categories[index]))
-                                  );
-                                }
-                                    , icon: Icon(Icons.keyboard_arrow_right_rounded)),
-
+                                IconButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  on_tap_inventory(
+                                                      foodItem:
+                                                          categories[index])));
+                                    },
+                                    icon: Icon(
+                                      Icons.keyboard_arrow_right_rounded,
+                                      color: Colors.white,
+                                    )),
                               ],
                             ),
                           ),
@@ -145,5 +162,3 @@ class _inventoryState extends State<Inventory> {
     );
   }
 }
-
-
