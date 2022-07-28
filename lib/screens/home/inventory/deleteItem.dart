@@ -24,31 +24,75 @@ class _MyWidgetState extends State<DeleteItem> {
               context: context,
               builder: (BuildContext context) {
                 return Center(
-                    child: AlertDialog(
-                        insetPadding: EdgeInsets.fromLTRB(
-                          0,
-                          0,
-                          0,
-                          ht * 0.1,
-                        ),
-                        title: Center(child: Text("Delete Item")),
-                        content: Column(children: [
-                          Text("Press Confirm to delete the item"),
+                    child: SizedBox(height: ht * 0.5,
+                      child: AlertDialog(
+                          insetPadding: EdgeInsets.fromLTRB(
+                            0,
+                            0,
+                            0,
+                            ht * 0.1,
+                          ),
+                          title: Center(child: Text("Delete Item",style: TextStyle(fontWeight: FontWeight.bold),)),
+                          content: Column(children: [
+                            Text("Press Confirm to delete this item."),
 
-                          // Row(
+                            
+                          SizedBox(
+                            height: ht * 0.04,
+                          ),
 
-                          // )
-                          InkWell(
-                            child: Container(
-                              child: Text("Confirm"),
-                            ),
-                            onTap: () async {
-                              await DatabaseService(uid: user!.uid).deleteItem(
-                                  itemname: widget.item,
-                                  category: widget.category);
-                            },
-                          )
-                        ])));
+                            
+                           
+                            Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SizedBox(
+                                height: ht * 0.06,
+                                width: wt * 0.4,
+                                child: ElevatedButton(
+                                    onPressed: () async {
+                                      await DatabaseService(uid: user!.uid)
+                                          .deleteItem(
+                                              itemname: widget.item,
+                                              category: widget.category);
+                                              Navigator.pop(context);
+                                    },
+                                    child: Text(
+                                      'Confirm',
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                    style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all<Color>(
+                                                Color(0xEDF2D308)))),
+                              ),
+                              SizedBox(
+                                width: wt * 0.025,
+                              ),
+                              SizedBox(
+                                height: ht * 0.06,
+                                width: wt * 0.4,
+                                child: ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text(
+                                      'Cancel',
+                                      style:
+                                          TextStyle(color: Color(0xEDF2D308),fontSize: 16),
+                                    ),
+                                    style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all<Color>(
+                                                Color.fromARGB(
+                                                    236, 255, 255, 255)))),
+                              ),
+                            ],
+                          ),
+
+
+                          ])),
+                    ));
               });
         },
         icon: Icon(
