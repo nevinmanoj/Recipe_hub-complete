@@ -7,6 +7,7 @@ import 'package:untitled/screens/home/inventory/inventoryMain.dart';
 import 'package:untitled/screens/home/side_menu.dart';
 import 'package:untitled/services/auth.dart';
 import 'package:untitled/services/database.dart';
+import 'package:untitled/shared/Constants.dart';
 import 'package:untitled/shared/classes.dart';
 
 // List rec=["sKEn7VZCm68ILeDtnoFq","IiDYLzKVq74fx6leQgbk","JRacC7ZKDP8mjyKLHrdc"] ;
@@ -35,7 +36,7 @@ class home extends StatelessWidget {
               ))
         ],
 
-        backgroundColor: Color(0xffF8DA19),
+        backgroundColor: appYellow,
       ),
       body: Container(
         child: SingleChildScrollView(
@@ -324,7 +325,7 @@ class home extends StatelessWidget {
                 // margin: EdgeInsets.all(6.0),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30.0),
-                  color: Color(0xffF8DA19),
+                  color: appYellow,
                 ),
                 child: Column(
                   children: [
