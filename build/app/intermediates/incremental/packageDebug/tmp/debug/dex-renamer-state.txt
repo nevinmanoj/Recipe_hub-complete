@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-#Thu Jul 28 13:04:49 IST 2022
+#Thu Jul 28 13:30:08 IST 2022
 base.2=D\:\\dev\\untitled\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes3.dex
 path.2=classes3.dex
 base.1=D\:\\dev\\untitled\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes2.dex
@@ -9,15 +8,3 @@ renamed.2=classes3.dex
 renamed.1=classes2.dex
 renamed.0=classes.dex
 path.0=classes.dex
-=======
-#Wed Jul 27 20:14:11 IST 2022
-base.2=E\:\\recipehub-complete\\Recipe_hub-complete\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes3.dex
-path.2=classes3.dex
-base.1=E\:\\recipehub-complete\\Recipe_hub-complete\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes2.dex
-path.1=classes2.dex
-base.0=E\:\\recipehub-complete\\Recipe_hub-complete\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
-renamed.2=classes3.dex
-renamed.1=classes2.dex
-renamed.0=classes.dex
-path.0=classes.dex
->>>>>>> d5a509704673b39397ac6793a175ecebe2800653

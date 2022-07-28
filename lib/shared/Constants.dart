@@ -2,13 +2,10 @@ import 'package:flutter/material.dart';
 
 const appYellow = Color(0xffF8DA19);
 
-<<<<<<< HEAD
-// const appYellow=Color.fromARGB(255, 0, 255, 42);
 
-List <String>categories = [
-=======
+
+
 List<String> categories = [
->>>>>>> d5a509704673b39397ac6793a175ecebe2800653
   'Fruits',
   'Vegetables',
   'Frozen',
