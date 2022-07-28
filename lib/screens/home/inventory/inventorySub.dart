@@ -5,34 +5,34 @@ import 'package:untitled/shared/Constants.dart';
 
 class on_tap_inventory extends StatelessWidget {
   String foodItem;
-   on_tap_inventory({Key? key, required this.foodItem}) : super(key: key);
+  on_tap_inventory({Key? key, required this.foodItem}) : super(key: key);
 
   @override
-
   Widget build(BuildContext context) {
     List<String> invent = [
-  'Fruits',
-  'Vegetables',
-  'Frozen',
-  'Dairy',
-  'Grains',
-  'Juices Oils And Sauces',
-  'Spices',
-  'adarsh',
-  
-  'akhil',
-  'pranoy',
-];
+      'Fruits',
+      'Vegetables',
+      'Frozen',
+      'Dairy',
+      'Grains',
+      'Juices Oils And Sauces',
+      'Spices',
+      'adarsh',
+      'akhil',
+      'pranoy',
+    ];
     double wt = MediaQuery.of(context).size.width;
     double ht = MediaQuery.of(context).size.height;
     return Scaffold(
-      appBar: 
-      // PreferredSize(
-      //   preferredSize: Size.fromHeight(0.0), // here the desired height
-      //   child: 
-        AppBar(
-          backgroundColor:appYellow,
-        ),
+      appBar:
+          // PreferredSize(
+          //   preferredSize: Size.fromHeight(0.0), // here the desired height
+          //   child:
+          //   child:
+          //   child:
+          AppBar(
+        backgroundColor: appYellow,
+      ),
       // ),
       body: Stack(
         children: [
@@ -90,10 +90,10 @@ class on_tap_inventory extends StatelessWidget {
                   ),
                   Container(
                     padding: EdgeInsets.only(left: 10),
-                    child:  Text(
+                    child: Text(
                       foodItem,
                       style:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                     ),
                   ),
                   Container(
@@ -112,8 +112,6 @@ class on_tap_inventory extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(invent[index]),
-
-
                             ],
                           ),
                         );
@@ -129,7 +127,3 @@ class on_tap_inventory extends StatelessWidget {
     );
   }
 }
-
-
-
-
