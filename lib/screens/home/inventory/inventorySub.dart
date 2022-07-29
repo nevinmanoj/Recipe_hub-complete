@@ -3,6 +3,8 @@ import 'dart:core';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:untitled/screens/home/inventory/addItem.dart';
+import 'package:untitled/screens/home/inventory/addItemFromSub.dart';
 import 'package:untitled/screens/home/inventory/deleteItem.dart';
 import 'package:untitled/screens/home/inventory/editItem.dart';
 import 'package:untitled/shared/Constants.dart';
@@ -49,6 +51,11 @@ class on_tap_inventory extends StatelessWidget {
                 border: InputBorder.none),
           ),
         ),
+ SizedBox(
+          height: 20,
+        ),
+
+        AddItemSub(category: foodItem,),
 
         SizedBox(
           height: 20,

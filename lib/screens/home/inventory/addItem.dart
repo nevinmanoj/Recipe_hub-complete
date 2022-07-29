@@ -17,8 +17,8 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
 final User? user = _auth.currentUser;
 
 class AddItem extends StatefulWidget {
-  const AddItem({Key? key}) : super(key: key);
-
+  
+  
   @override
   State<AddItem> createState() => _AddItemState();
 }
@@ -166,7 +166,7 @@ class _ItemNameState extends State<ItemName> {
 }
 
 class Category extends StatefulWidget {
-  const Category({Key? key}) : super(key: key);
+  
 
   @override
   State<Category> createState() => _CategoryState();
