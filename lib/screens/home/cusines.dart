@@ -1,12 +1,16 @@
 // ignore_for_file: await_only_futures
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled/screens/home/cook.dart';
 import 'package:untitled/screens/home/side_menu.dart';
 import 'package:untitled/services/database.dart';
 import 'package:untitled/shared/Constants.dart';
 import 'package:untitled/shared/classes.dart';
+
+final FirebaseAuth _auth =FirebaseAuth.instance;
+final User? user = _auth.currentUser;
 class CuisinesPage extends StatefulWidget {
   String Cuisine;
   CuisinesPage({required this.Cuisine});
@@ -37,8 +41,20 @@ class _CuisinesPageState extends State<CuisinesPage> {
         stream: FirebaseFirestore.instance.collection('Recipes').where('Cuisine',isEqualTo: widget.Cuisine).snapshots(),
                builder: (context,RecipeSnapshot){
                 var Recipes = RecipeSnapshot.data?.docs;
+                List<bool> canCook=[];
                 
-              
+                if(Recipes!=null)
+                {
+                  var length=Recipes.length;
+                for(int j=0;j<length;j++){
+                  Map<String, dynamic> ingredients = Recipes[j]['ingre'];
+
+                  canCook.add(DatabaseService(uid: user!.uid).canCook(ingredients: ingredients));
+
+                }
+                // print(canCook);
+                }
+
                 if (RecipeSnapshot.connectionState == ConnectionState.waiting) {
           return Center(
             child: CircularProgressIndicator(),
@@ -86,6 +102,7 @@ class _CuisinesPageState extends State<CuisinesPage> {
                     itemCount: Recipes?.length,
                    shrinkWrap: true,
                     itemBuilder: (BuildContext context, int i) {
+                      
                       return InkWell(
                         onTap: () async {
                         
@@ -97,42 +114,52 @@ class _CuisinesPageState extends State<CuisinesPage> {
                         child: Container(
                           decoration: BoxDecoration(shape: BoxShape.rectangle,
                             border: Border.all(color: Colors.grey.withOpacity(0.15),),borderRadius: BorderRadius.all(Radius.circular(20))),
-                            
+                            //helo
                           
                           // padding: const EdgeInsets.only(left: 5),
                           height: 0.17 * ht,
                            width: wt*0.8,
                           margin:  EdgeInsets.only(bottom: wt*0.025),
                           
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
+                          child: Stack(
                             children: [
-                              Padding(
-                                padding:  EdgeInsets.fromLTRB(10,0,10,0),
-                                child: Container(
-                                  
-                                  height: 0.15 *ht,
-                                  width: wt*0.30,
-                                  decoration: BoxDecoration(
-                                     image:  DecorationImage(image: NetworkImage(Recipes?[i]['img']),fit: BoxFit.fill,),
-                                      borderRadius: BorderRadius.circular(15)
-                                ),),
-                              ),
-                              Column(
+                              Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  SizedBox(height:ht*0.015 ,),
-                                  Text(Recipes?[i]['Title'],style: TextStyle(fontWeight: FontWeight.w600,fontSize: 25,),),
-                                  SizedBox(height:ht*0.03 ,),        
-                                  Text('Preparation time: ${Recipes?[i]['Time']}',style: TextStyle(fontSize: 17,color: Color.fromARGB(255, 138, 137, 137),fontWeight: FontWeight.w500,),),
-                                  Text('Calories: ${Recipes?[i]['Calories']}',style: TextStyle(fontWeight: FontWeight.w500,fontSize: 17),),
-                                  
-                                  Row(children:[Text(Recipes?[i]['isVeg']?"VEG ":"!VEG ",style: TextStyle(fontWeight: FontWeight.bold,color: Recipes?[i]['isVeg']?Color(0xFF00923F):Color(0xFFda251e)),),
-                                  Image(image: AssetImage(Recipes?[i]['isVeg']?"assets/veg.png":"assets/nonVeg.png"),height: 0.04*ht,width: 0.04*wt,)])
-                                  
+                                  Padding(
+                                    padding:  EdgeInsets.fromLTRB(10,0,10,0),
+                                    child: Container(
+                                      
+                                      height: 0.15 *ht,
+                                      width: wt*0.30,
+                                      decoration: BoxDecoration(
+                                         image:  DecorationImage(image: NetworkImage(Recipes?[i]['img']),fit: BoxFit.fill,),
+                                          borderRadius: BorderRadius.circular(15)
+                                    ),),
+                                  ),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(height:ht*0.015 ,),
+                                      Text(Recipes?[i]['Title'],style: TextStyle(fontWeight: FontWeight.w600,fontSize: 25,),),
+                                      SizedBox(height:ht*0.03 ,),        
+                                      Text('Preparation time: ${Recipes?[i]['Time']}',style: TextStyle(fontSize: 17,color: Color.fromARGB(255, 138, 137, 137),fontWeight: FontWeight.w500,),),
+                                      Text('Calories: ${Recipes?[i]['Calories']}',style: TextStyle(fontWeight: FontWeight.w500,fontSize: 17),),
+                                      
+                                      Row(children:[Text(Recipes?[i]['isVeg']?"VEG ":"!VEG ",style: TextStyle(fontWeight: FontWeight.bold,color: Recipes?[i]['isVeg']?Color(0xFF00923F):Color(0xFFda251e)),),
+                                      Image(image: AssetImage(Recipes?[i]['isVeg']?"assets/veg.png":"assets/nonVeg.png"),height: 0.04*ht,width: 0.04*wt,)])
+                                      
+                                    ],
+                                  )
                                 ],
-                              )
+                              ),
+                              if(canCook[i])
+                              Container(decoration: BoxDecoration(shape: BoxShape.rectangle,
+                            color:Colors.grey.withOpacity(0.5))),
+
+
+
                             ],
                           ),
                         ),

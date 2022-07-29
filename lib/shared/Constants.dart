@@ -22,6 +22,7 @@ List<String> categories = [
 List<String> units = [
   'Kg',
   'L',
+  'Nos'
 ];
 
 List<String> images = [

@@ -11,6 +11,8 @@ import 'package:untitled/services/database.dart';
 import 'package:untitled/shared/Constants.dart';
 import 'package:untitled/shared/classes.dart';
 
+final FirebaseAuth _auth =FirebaseAuth.instance;
+final User? user = _auth.currentUser;
 
 class Favorites extends StatefulWidget {
   List <recipeModel> R;

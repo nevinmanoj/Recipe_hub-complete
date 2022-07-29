@@ -13,7 +13,7 @@ import '../../services/database.dart';
 
 
 final FirebaseAuth _auth =FirebaseAuth.instance;
-
+final User? user = _auth.currentUser;
 class cookPage extends StatefulWidget {
      recipeModel currentRecipe;
   
@@ -63,8 +63,16 @@ child: Center(child: Text(" Confirm to Update Inventory ")),
           children: [
             Stack(
               children: [
-                Container(height:250,width:wt ,decoration: BoxDecoration(color:Colors.amber,
-                image: DecorationImage(image: NetworkImage(widget.currentRecipe.img),fit: BoxFit.fill)),),
+                InkWell(
+                  onDoubleTap: () {
+                     setState(() =>widget.currentRecipe.isLike = !widget.currentRecipe.isLike);
+                      DatabaseService(uid:user!.uid ).updateFavorites(RecipeId:widget.currentRecipe.RecipeId,isLike:widget.currentRecipe.isLike);
+                      
+                    
+                  },
+                  child: Container(height:250,width:wt ,decoration: BoxDecoration(color:Colors.amber,
+                  image: DecorationImage(image: NetworkImage(widget.currentRecipe.img),fit: BoxFit.fill)),),
+                ),
 
                 Container(
                   width: wt,
@@ -72,7 +80,7 @@ child: Center(child: Text(" Confirm to Update Inventory ")),
                   child: Align(
                     alignment: Alignment.bottomRight,
                     child: ElevatedButton(onPressed: () {
-                      final User? user = _auth.currentUser;
+                      
                       
                       setState(() =>widget.currentRecipe.isLike = !widget.currentRecipe.isLike);
                       DatabaseService(uid:user!.uid ).updateFavorites(RecipeId:widget.currentRecipe.RecipeId,isLike:widget.currentRecipe.isLike);
@@ -160,7 +168,7 @@ child: Center(child: Text(" Confirm to Update Inventory ")),
                                   itemBuilder: (BuildContext context, int ind) {
                                     return Padding(
                                       padding: const EdgeInsets.all(10.0),
-                                      child: Text("${ind+1}.${keys[ind]}: ${widget.currentRecipe.ingredients[keys[ind]]} ",style: TextStyle(color:Colors.grey[800],fontWeight:FontWeight.w300 ),),
+                                      child: Text("${ind+1}.${keys[ind]}: ${widget.currentRecipe.ingredients[keys[ind]][0]}  ${widget.currentRecipe.ingredients[keys[ind]][1]} ",style: TextStyle(color:Colors.grey[800],fontWeight:FontWeight.w300 ),),
                                     );
                                   },
                                 ),
