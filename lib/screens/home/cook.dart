@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/foundation/key.dart';
+import 'package:lottie/lottie.dart';
 import 'package:untitled/shared/Constants.dart';
 import 'package:untitled/shared/expFloatingButton.dart';
 import 'package:untitled/shared/classes.dart';
@@ -65,6 +66,7 @@ child: Center(child: Text(" Confirm to Update Inventory ")),
               children: [
                 InkWell(
                   onDoubleTap: () {
+
                      setState(() =>widget.currentRecipe.isLike = !widget.currentRecipe.isLike);
                       DatabaseService(uid:user!.uid ).updateFavorites(RecipeId:widget.currentRecipe.RecipeId,isLike:widget.currentRecipe.isLike);
                       
@@ -72,6 +74,15 @@ child: Center(child: Text(" Confirm to Update Inventory ")),
                   },
                   child: Container(height:250,width:wt ,decoration: BoxDecoration(color:Colors.amber,
                   image: DecorationImage(image: NetworkImage(widget.currentRecipe.img),fit: BoxFit.fill)),),
+                ),
+                if(widget.currentRecipe.isLike)
+                InkWell(onDoubleTap: (() {
+                  setState(() =>widget.currentRecipe.isLike = !widget.currentRecipe.isLike);
+                      DatabaseService(uid:user!.uid ).updateFavorites(RecipeId:widget.currentRecipe.RecipeId,isLike:widget.currentRecipe.isLike);
+                  
+                }),
+                  child: Center(child: Lottie.network('https://assets8.lottiefiles.com/packages/lf20_eoism1be.json',repeat: false,
+                               )),
                 ),
 
                 Container(

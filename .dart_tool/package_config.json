@@ -8,6 +8,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "archive",
+      "rootUri": "file:///C:/Users/nevin/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/archive-3.3.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "async",
       "rootUri": "file:///C:/Users/nevin/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/async-2.8.2",
       "packageUri": "lib/",
@@ -66,6 +72,12 @@
       "rootUri": "file:///C:/Users/nevin/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/collection-1.16.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
+    },
+    {
+      "name": "crypto",
+      "rootUri": "file:///C:/Users/nevin/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/crypto-3.0.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.14"
     },
     {
       "name": "cupertino_icons",
@@ -168,6 +180,12 @@
       "rootUri": "file:///C:/Users/nevin/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/lints-2.0.0",
       "packageUri": "lib/",
       "languageVersion": "2.17"
+    },
+    {
+      "name": "lottie",
+      "rootUri": "file:///C:/Users/nevin/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/lottie-1.4.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
     },
     {
       "name": "matcher",
@@ -278,7 +296,7 @@
       "languageVersion": "2.17"
     }
   ],
-  "generated": "2022-07-28T16:14:06.278117Z",
+  "generated": "2022-07-30T15:53:38.078129Z",
   "generator": "pub",
   "generatorVersion": "2.17.5"
 }

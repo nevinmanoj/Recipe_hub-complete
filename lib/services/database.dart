@@ -80,7 +80,17 @@ class DatabaseService {
     }
   }
 
+  // Future isFavorite({required String RecipeId})async{
+  //   final user =
+  //       await FirebaseFirestore.instance.collection('userInfo').doc(uid).get();
+  //       List favorites = user.data()!['Favorites'];
+        
+  //       bool isLike = favorites.contains(RecipeId);
+  //       return isLike;
+  // }
+
   Future getRecipe({required String RecipeId}) async {
+    // print(RecipeId);
     final Recipe = await FirebaseFirestore.instance
         .collection('Recipes')
         .doc(RecipeId)
@@ -91,6 +101,7 @@ class DatabaseService {
     List favorites = user.data()!['Favorites'];
 
     bool isLike = favorites.contains(RecipeId);
+    // bool isLike=false;
     int Calories = Recipe.data()!['Calories'];
     String Cuisine = Recipe.data()!['Cuisine'];
     String Time = Recipe.data()!['Time'];
@@ -120,6 +131,7 @@ class DatabaseService {
     List<recipeModel> fav = [];
     for (int j = 0; j < favorites.length; j++) {
       fav.add(await getRecipe(RecipeId: favorites[j]));
+        // fav[j].isLike=true;
     }
 
     return fav;
@@ -133,21 +145,40 @@ class DatabaseService {
         .update({itemname: FieldValue.delete()});
   }
 
+ 
 
-bool canCook({required Map<String,dynamic> ingredients}){
+  Future<List<bool>> canCook({required var Recipes}) async {
 
-var keys=ingredients.keys.toList();
-for(int i=0;i<keys.length;i++)
-{
+       List<bool> cC=[];
+        // QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection("userInfo/${uid}/inventory").getDocuments();
+        // var list = querySnapshot.docs;
+      for(int j=0;j<Recipes.length;j++)
+     {
+      Map<String, dynamic> ingredients = Recipes[j]['ingre'];
+      var keys=ingredients.keys.toList();
+      
+      for(int i=0;i<keys.length;i++)
+        {
+        
+             var inventory= await FirebaseFirestore.instance
+              .collection('userInfo/${uid}/inventory')
+              .doc(ingredients[keys[i]][2])
+              .get();
 
-  
-}
+              
+
+        }
+          if(j%2==0)
+          cC.add(true);
+          else
+          cC.add(false);
+      }
 
 
 
 
 
-  return true;
-}
+      return cC;
+    }
 
 }

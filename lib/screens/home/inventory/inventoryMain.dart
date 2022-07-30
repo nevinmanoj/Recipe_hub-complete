@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled/screens/home/inventory/addItem.dart';
 import 'package:untitled/screens/home/inventory/inventorySub.dart';
@@ -81,7 +82,7 @@ class _inventoryState extends State<Inventory> {
                           onTap: () {
                             Navigator.push(
                                 context,
-                                MaterialPageRoute(
+                                CupertinoPageRoute(
                                     builder: (context) => on_tap_inventory(
                                         foodItem: categories[index])));
                           },

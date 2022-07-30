@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled/screens/home/cook.dart';
 import 'package:untitled/screens/home/cusines.dart';
@@ -28,7 +29,7 @@ class home extends StatelessWidget {
           IconButton(
               onPressed: () {
                  
-                Navigator.push(context,MaterialPageRoute(builder:(context)=>Inventory() ));
+                Navigator.push(context,CupertinoPageRoute(builder:(context)=>Inventory() ));
               },
               icon: Icon(
                 Icons.add_shopping_cart,

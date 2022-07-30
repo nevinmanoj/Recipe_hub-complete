@@ -8,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:untitled/screens/home/sideMenu/Favorites.dart';
+import 'package:untitled/screens/home/sideMenu/about.dart';
 
 import 'package:untitled/services/database.dart';
 import 'package:untitled/shared/Constants.dart';
@@ -64,7 +65,7 @@ class sideMenu extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.settings),
             title: Text('Settings'),
-            onTap: () => {},
+            onTap: () => {Navigator.push(context,MaterialPageRoute(builder: (context) =>  AboutScreen()))},
           ),
           ListTile(
             leading: Icon(Icons.favorite),
@@ -88,7 +89,7 @@ class sideMenu extends StatelessWidget {
             leading: Icon(Icons.info),
             title: Text('About'),
             onTap: ()  {
-            
+             Navigator.push(context,MaterialPageRoute(builder: (context) =>  AboutScreen()));
               },
           ),
         ],
