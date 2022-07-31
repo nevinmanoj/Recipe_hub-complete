@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:untitled/screens/home/cook.dart';
 import 'package:untitled/screens/home/cusines.dart';
 import 'package:untitled/screens/home/inventory/inventoryMain.dart';
@@ -10,8 +11,6 @@ import 'package:untitled/services/auth.dart';
 import 'package:untitled/services/database.dart';
 import 'package:untitled/shared/Constants.dart';
 import 'package:untitled/shared/classes.dart';
-
-// List rec=["sKEn7VZCm68ILeDtnoFq","IiDYLzKVq74fx6leQgbk","JRacC7ZKDP8mjyKLHrdc"] ;
 
 
 class home extends StatelessWidget {
@@ -26,15 +25,17 @@ class home extends StatelessWidget {
         
 
         actions: [
-          IconButton(
-              onPressed: () {
+                  InkWell(onTap: () => {Navigator.push(context,CupertinoPageRoute(builder:(context)=>Inventory() ))},
+                    child: Container(child:Lottie.network('https://assets1.lottiefiles.com/packages/lf20_2mny7oza.json')))
+          // IconButton(
+          //     onPressed: () {
                  
-                Navigator.push(context,CupertinoPageRoute(builder:(context)=>Inventory() ));
-              },
-              icon: Icon(
-                Icons.add_shopping_cart,
-                color: Colors.black,
-              ))
+          //       Navigator.push(context,CupertinoPageRoute(builder:(context)=>Inventory() ));
+          //     },
+          //     icon: Icon(
+          //       Icons.add_shopping_cart,
+          //       color: Colors.black,
+          //     ))
         ],
 
         backgroundColor: appYellow,
@@ -247,7 +248,8 @@ class home extends StatelessWidget {
               ),
               Container(
                 height: MediaQuery.of(context).size.height * 0.4,
-                child: ListView(children: [
+                child: ListView(physics: NeverScrollableScrollPhysics(),
+                  children: [
                   CarouselSlider(
                     options: CarouselOptions(
                       height: 375.0,

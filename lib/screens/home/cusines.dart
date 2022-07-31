@@ -1,4 +1,4 @@
-// ignore_for_file: await_only_futures
+// ignore_for_file: await_only_futures, prefer_const_constructors
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -143,14 +143,30 @@ class _CuisinesPageState extends State<CuisinesPage> {
                                     children: [
                                       Padding(
                                         padding:  EdgeInsets.fromLTRB(10,0,10,0),
-                                        child: Container(
-                                          
-                                          height: 0.15 *ht,
-                                          width: wt*0.30,
-                                          decoration: BoxDecoration(
-                                             image:  DecorationImage(image: NetworkImage(Recipes?[i]['img']),fit: BoxFit.fill,),
-                                              borderRadius: BorderRadius.circular(15)
-                                        ),),
+                                        child: Stack(
+                                          children: [
+                                            Container(
+                                             
+                                              height: 0.15 *ht,
+                                              width: wt*0.30,
+                                              decoration: BoxDecoration(
+                                                 image:  DecorationImage(image: NetworkImage(Recipes?[i]['img']),fit: BoxFit.fill,),
+                                                  borderRadius: BorderRadius.circular(15)
+                                            ),
+                                             
+                                              child:Padding(
+                                                padding: EdgeInsets.fromLTRB(wt*0.015,0,0,ht*0.002),
+                                                child: Align(
+                                                  alignment:Alignment.bottomLeft,
+                                                  child:  !canCook12![i]?Text("No\nIngredients",style: TextStyle(
+                                                    color: Color.fromARGB(255, 255, 255, 255),fontSize: 22,fontWeight: FontWeight.w500),
+                                                  ):Text("")),
+                                              ),),
+
+                                            // if(!canCook12![i])
+                                            // Text("No \n Ingredients" )
+                                          ],
+                                        ),
                                       ),
                                       Column(
                                         mainAxisAlignment: MainAxisAlignment.start,
@@ -169,11 +185,11 @@ class _CuisinesPageState extends State<CuisinesPage> {
                                       )
                                     ],
                                   ),
-                                  if(!canCook12![i])
+                                  if(!canCook12[i])
                                   Container(
                                       foregroundDecoration: BoxDecoration(
                                           color:
-                                              canCook12[i] ? null : Colors.grey,
+                                              canCook12[i] ? null : Color.fromARGB(255, 255, 255, 255),
                                           backgroundBlendMode: canCook12[i]
                                               ? null
                                               : BlendMode.saturation),

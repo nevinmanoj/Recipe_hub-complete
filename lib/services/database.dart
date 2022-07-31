@@ -1,3 +1,6 @@
+import 'dart:async';
+
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -145,40 +148,113 @@ class DatabaseService {
         .update({itemname: FieldValue.delete()});
   }
 
- 
+ //main algorithm of inventory compare
 
   Future<List<bool>> canCook({required var Recipes}) async {
 
        List<bool> cC=[];
-        // QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection("userInfo/${uid}/inventory").getDocuments();
-        // var list = querySnapshot.docs;
+        QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection("userInfo/${uid}/inventory").get();
+        var inventList = querySnapshot.docs;
+        Map<String,int> inventMap={};
+        for(int k=0;k<inventList.length;k++)
+          inventMap[inventList[k].id]=k;
+
+        //  print(inventMap);
+        Map<String,dynamic> inventSub={};
+         
+
       for(int j=0;j<Recipes.length;j++)
      {
       Map<String, dynamic> ingredients = Recipes[j]['ingre'];
       var keys=ingredients.keys.toList();
       
+      cC.add(true);
       for(int i=0;i<keys.length;i++)
         {
-        
-             var inventory= await FirebaseFirestore.instance
-              .collection('userInfo/${uid}/inventory')
-              .doc(ingredients[keys[i]][2])
-              .get();
+               
+               //compare invent.id and ingredients[keys[i]][2]
+                var ind=inventList[inventMap[ingredients[keys[i]][2]] as int].data() as Map<String,dynamic>;
+                // var indKeys=ind.keys;
+                // var indItem=keys[i];
+                var item=keys[i].toLowerCase();
+                var itemQty=ingredients[keys[i]][0];
+                
 
+
+                if(ind[item]==null)
+                 {
+                  // print(ind);
+                  
+                  cC[j]=false;
+                  break;
+                  }
+                //  print(ind[item][0]);
+                //  print("${f}->${ingredients[keys[i]][2]}->${i}\n");
+                var newitemQty;
+            //convert tbsppon,etc ->kg,L ingredients[keys[i]][1]
               
+              if(ind[item][1]=='Kg'||ind[item][1]=='L')
+              {
+                //convert ingre to kg or L
+                    if(itemQty!=null){print(j);
+                    newitemQty=convertUnits(unit:ingredients[keys[i]][1] , qty: itemQty);}
+                    else
+                    print('qty null ${item}');
+                   
+                   if(itemQty==-1)
+                   print(ind[item]);
+                   
+              }
+              else{
+                  newitemQty=itemQty;
+              }
+    
+            //compare values of invent.id and ingredients[keys[i]][0]
+               
+               if(!(newitemQty<=ind[item][0])){
+                  cC[j]=false;
+                  break;
 
+               }
+
+
+  
         }
-          if(j%2==0)
-          cC.add(true);
-          else
-          cC.add(false);
+        
       }
-
-
-
-
-
+    
       return cC;
     }
 
+}
+
+ double convertUnits({required String unit,required dynamic qty}){
+      unit=unit.toLowerCase();
+      var newQty=qty;
+      if(qty.runtimeType!=double)
+       newQty=qty.toDouble();
+       
+
+
+      if(unit=='teaspoon'||unit=='teaspoons'){
+        newQty=newQty*0.00492892;
+
+      }
+      else if(unit=='tablespoon'||unit=='tablespoons'){
+        newQty=newQty*0.0147868;
+      }
+      else if(unit=='cup'||unit=='cups'){
+        newQty=newQty*0.236588;
+      }
+      else if(unit=='g'){
+        newQty=newQty*0.001;
+      }
+      else if(unit=='Kg'||unit=='L'){
+       newQty=newQty*1;
+      }
+      else{
+        print("passed unit error");
+        return -1;
+      }
+      return newQty;
 }

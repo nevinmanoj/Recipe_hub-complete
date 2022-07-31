@@ -32,90 +32,92 @@ class _AddItemState extends State<AddItem> {
     return Container(
       child: Align(
         alignment: Alignment.center,
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            primary: appYellow,
-          ),
-          child: Text(
-            "Add Item",
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-          ),
-          onPressed: () {
-            setState(() {
-              itemName = "";
-              newcategory = categories[0];
-              newUnit = units[0];
-              qty = "";
-              quantity = 0;
-            });
-            showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return Center(
-                    child: AlertDialog(
-                      insetPadding: EdgeInsets.fromLTRB(
-                        0,
-                        0,
-                        0,
-                        ht * 0.1,
-                      ),
-                      title: Center(child: Text("Enter Item Details")),
-                      content: Form(
-                          key: _formKey,
-                          child: Column(
-                            children: [
-                              ItemName(),
-                              SizedBox(
-                                height: 15,
-                              ),
-                              Category(),
-                              SizedBox(
-                                height: 15,
-                              ),
-                              ItemQuantity(),
-                              SizedBox(
-                                width: 170,
-                                child: ElevatedButton(
-                                  onPressed: () async {
-                                    if (_formKey.currentState!.validate()) {
-                                      quantity = double.parse(qty);
-
-                                      Item I = Item(
-                                          name: itemName,
-                                          qty: quantity,
-                                          unit: newUnit,
-                                          category: newcategory);
-                                      final r =
-                                          await DatabaseService(uid: user!.uid)
-                                              .addInventory(I);
-
-                                      Navigator.pop(context);
-                                    }
-                                  },
-                                  style: ButtonStyle(
-                                      shape: MaterialStateProperty.all<
-                                              RoundedRectangleBorder>(
-                                          RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                      )),
-                                      backgroundColor:
-                                          MaterialStateProperty.all<Color>(
-                                              Color(0xEDF2D308))),
-                                  child: Center(
-                                      child: Text("Add to Inventory",
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 16))),
+        child: SizedBox(height: ht*0.05,width: wt*0.26,
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              primary: appYellow,
+            ),
+            child: Text(
+              "Add Item",
+              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold,fontSize: 18),
+            ),
+            onPressed: () {
+              setState(() {
+                itemName = "";
+                newcategory = categories[0];
+                newUnit = units[0];
+                qty = "";
+                quantity = 0;
+              });
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Center(
+                      child: AlertDialog(
+                        insetPadding: EdgeInsets.fromLTRB(
+                          0,
+                          0,
+                          0,
+                          ht * 0.1,
+                        ),
+                        title: Center(child: Text("Enter Item Details")),
+                        content: Form(
+                            key: _formKey,
+                            child: Column(
+                              children: [
+                                ItemName(),
+                                SizedBox(
+                                  height: 15,
                                 ),
-                              ),
-                            ],
-                          )),
-                    ),
-                  );
-                });
-          },
+                                Category(),
+                                SizedBox(
+                                  height: 15,
+                                ),
+                                ItemQuantity(),
+                                SizedBox(
+                                  width: 170,
+                                  child: ElevatedButton(
+                                    onPressed: () async {
+                                      if (_formKey.currentState!.validate()) {
+                                        quantity = double.parse(qty);
+
+                                        Item I = Item(
+                                            name: itemName.toLowerCase(),
+                                            qty: quantity,
+                                            unit: newUnit,
+                                            category: newcategory);
+                                        final r =
+                                            await DatabaseService(uid: user!.uid)
+                                                .addInventory(I);
+
+                                        Navigator.pop(context);
+                                      }
+                                    },
+                                    style: ButtonStyle(
+                                        shape: MaterialStateProperty.all<
+                                                RoundedRectangleBorder>(
+                                            RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                        )),
+                                        backgroundColor:
+                                            MaterialStateProperty.all<Color>(
+                                                Color(0xEDF2D308))),
+                                    child: Center(
+                                        child: Text("Add to Inventory",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16))),
+                                  ),
+                                ),
+                              ],
+                            )),
+                      ),
+                    );
+                  });
+            },
+          ),
         ),
       ),
     );

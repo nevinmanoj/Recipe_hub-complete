@@ -84,7 +84,7 @@ class _AddItemState extends State<AddItemSub> {
                                       quantity = double.parse(qty);
 
                                       Item I = Item(
-                                          name: itemName,
+                                          name: itemName.toLowerCase(),
                                           qty: quantity,
                                           unit: newUnit,
                                           category: widget.category);
