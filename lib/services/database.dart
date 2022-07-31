@@ -264,6 +264,50 @@ class DatabaseService {
 
 
 
+  Future UpdateInventory({required Map<String,dynamic> ingredients})async{
+        QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection("userInfo/${uid}/inventory").get();
+        var inventList = querySnapshot.docs;
+        Map<String,int> inventMap={};
+        for(int k=0;k<inventList.length;k++)
+          inventMap[inventList[k].id]=k;
+          Map<String,dynamic> inventSub={};
+       
+          var keys=ingredients.keys.toList();
+           for(int i=0;i<keys.length;i++){
+            var ind=inventList[inventMap[ingredients[keys[i]][2]] as int].data() as Map<String,dynamic>;
+                // var indKeys=ind.keys;
+                // var indItem=keys[i];
+                var item=keys[i].toLowerCase();
+                var itemQty=ingredients[keys[i]][0];
+                var newitemQty;
+
+
+                if(ind[item][1]=='Kg'||ind[item][1]=='L')
+              {//convert ingre to kg or L
+                    if(itemQty!=null){
+                      // print(item);
+                    newitemQty=convertUnits(unit:ingredients[keys[i]][1] , qty: itemQty);}
+                  }
+              else{
+                  newitemQty=itemQty;
+              }
+
+                 newitemQty= ind[item][0]-newitemQty;
+                   await FirebaseFirestore.instance
+        .collection('userInfo/${uid}/inventory')
+        .doc(ingredients[keys[i]][2])
+        .set({
+      '${item}': [newitemQty, ind[item][1]]
+    }, SetOptions(merge: true));
+
+
+
+           }
+
+
+
+  }
+
 
 
 

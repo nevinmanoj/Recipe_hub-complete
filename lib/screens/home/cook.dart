@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:lottie/lottie.dart';
+import 'package:untitled/screens/home/inventory/updateInvent.dart';
 import 'package:untitled/shared/Constants.dart';
 import 'package:untitled/shared/expFloatingButton.dart';
 import 'package:untitled/shared/classes.dart';
@@ -50,6 +51,21 @@ class _cookPageState extends State<cookPage> {
 ElevatedButton(
 onPressed: ()async{
       bool canCook=await DatabaseService(uid: user!.uid).canCookSingle(ingredients:widget.currentRecipe.ingredients );
+      
+      if(canCook)
+      await DatabaseService(uid: user!.uid).UpdateInventory(ingredients: widget.currentRecipe.ingredients);
+
+      showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return Center(
+                    child: SizedBox(height: ht * 0.5,
+                      child:UpdateInvent(canCook: canCook, ingredients: widget.currentRecipe.ingredients)
+                      )
+                      );
+                      }
+                      );
+
       print(canCook);
 },
 style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(appYellow)),
