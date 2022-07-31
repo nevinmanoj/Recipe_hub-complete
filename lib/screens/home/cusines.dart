@@ -73,7 +73,7 @@ class _CuisinesPageState extends State<CuisinesPage> {
               if(canCookSnapshot.data==null)
               // ignore: curly_braces_in_flow_control_structures
               return LoadCusines();
-                    print(canCook12);  
+                    // print(canCook12);  
             return Column(
               
               crossAxisAlignment: CrossAxisAlignment.start,

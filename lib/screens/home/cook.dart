@@ -17,6 +17,7 @@ final FirebaseAuth _auth =FirebaseAuth.instance;
 final User? user = _auth.currentUser;
 class cookPage extends StatefulWidget {
      recipeModel currentRecipe;
+     
   
 
   cookPage({required this.currentRecipe});
@@ -47,7 +48,10 @@ class _cookPageState extends State<cookPage> {
           distanceBetween: 80.0,
           subChildren: [
 ElevatedButton(
-onPressed: (){},
+onPressed: ()async{
+      bool canCook=await DatabaseService(uid: user!.uid).canCookSingle(ingredients:widget.currentRecipe.ingredients );
+      print(canCook);
+},
 style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(appYellow)),
 child: Center(child: Text(" Confirm to Update Inventory ")),
 

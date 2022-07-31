@@ -71,8 +71,9 @@ class sideMenu extends StatelessWidget {
             leading: Icon(Icons.favorite),
             title: Text('Favorites'),
             onTap: () async {
-
+              
               List<recipeModel> R=await DatabaseService(uid: user!.uid).getFavoriteList();
+              
               Navigator.push(context,MaterialPageRoute(builder: (context) =>  Favorites(R: R)));
 
             },

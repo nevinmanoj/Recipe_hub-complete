@@ -167,7 +167,7 @@ class DatabaseService {
      {
       Map<String, dynamic> ingredients = Recipes[j]['ingre'];
       var keys=ingredients.keys.toList();
-      
+      // print('**********${Recipes[j]['Title']}->${keys.length}**********');
       cC.add(true);
       for(int i=0;i<keys.length;i++)
         {
@@ -179,52 +179,93 @@ class DatabaseService {
                 var item=keys[i].toLowerCase();
                 var itemQty=ingredients[keys[i]][0];
                 
-
+                  // print('${item}=> ${itemQty}<${ind[item]} ');
 
                 if(ind[item]==null)
-                 {
-                  // print(ind);
-                  
-                  cC[j]=false;
-                  break;
-                  }
-                //  print(ind[item][0]);
-                //  print("${f}->${ingredients[keys[i]][2]}->${i}\n");
+                 {cC[j]=false;break;}
+              
                 var newitemQty;
             //convert tbsppon,etc ->kg,L ingredients[keys[i]][1]
-              
-              if(ind[item][1]=='Kg'||ind[item][1]=='L')
-              {
-                //convert ingre to kg or L
-                    if(itemQty!=null){print(j);
+             if(ind[item][1]=='Kg'||ind[item][1]=='L')
+              {//convert ingre to kg or L
+                    if(itemQty!=null){
+                      // print(item);
                     newitemQty=convertUnits(unit:ingredients[keys[i]][1] , qty: itemQty);}
-                    else
-                    print('qty null ${item}');
-                   
-                   if(itemQty==-1)
-                   print(ind[item]);
-                   
-              }
+                  }
               else{
                   newitemQty=itemQty;
               }
-    
-            //compare values of invent.id and ingredients[keys[i]][0]
-               
-               if(!(newitemQty<=ind[item][0])){
+          //compare values of invent.id and ingredients[keys[i]][0]
+                 if(!(newitemQty<=ind[item][0])){
+                 
                   cC[j]=false;
                   break;
 
                }
 
-
-  
         }
         
       }
     
       return cC;
     }
+
+    Future canCookSingle({required Map<String,dynamic> ingredients})async{
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection("userInfo/${uid}/inventory").get();
+        var inventList = querySnapshot.docs;
+        Map<String,int> inventMap={};
+        for(int k=0;k<inventList.length;k++)
+          inventMap[inventList[k].id]=k;
+
+        //  print(inventMap);
+        Map<String,dynamic> inventSub={};
+       
+      var keys=ingredients.keys.toList();
+
+      for(int i=0;i<keys.length;i++)
+        {
+               
+               //compare invent.id and ingredients[keys[i]][2]
+                var ind=inventList[inventMap[ingredients[keys[i]][2]] as int].data() as Map<String,dynamic>;
+                // var indKeys=ind.keys;
+                // var indItem=keys[i];
+                var item=keys[i].toLowerCase();
+                var itemQty=ingredients[keys[i]][0];
+                
+                  // print('${item}=> ${itemQty}<${ind[item]} ');
+
+                if(ind[item]==null)
+                 {return false;}
+              
+                var newitemQty;
+            //convert tbsppon,etc ->kg,L ingredients[keys[i]][1]
+             if(ind[item][1]=='Kg'||ind[item][1]=='L')
+              {//convert ingre to kg or L
+                    if(itemQty!=null){
+                      // print(item);
+                    newitemQty=convertUnits(unit:ingredients[keys[i]][1] , qty: itemQty);}
+                  }
+              else{
+                  newitemQty=itemQty;
+              }
+          //compare values of invent.id and ingredients[keys[i]][0]
+                 if(!(newitemQty<=ind[item][0])){
+                 
+                  return false;
+                  
+
+               }
+          
+        }
+
+        return true;
+
+    }
+
+
+
+
+
 
 }
 
@@ -235,7 +276,7 @@ class DatabaseService {
        newQty=qty.toDouble();
        
 
-
+      
       if(unit=='teaspoon'||unit=='teaspoons'){
         newQty=newQty*0.00492892;
 
@@ -249,7 +290,7 @@ class DatabaseService {
       else if(unit=='g'){
         newQty=newQty*0.001;
       }
-      else if(unit=='Kg'||unit=='L'){
+      else if(unit=='Kg'||unit=='L'||unit=='kg'||unit=='l'){
        newQty=newQty*1;
       }
       else{
