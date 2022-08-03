@@ -120,7 +120,7 @@ class _CuisinesPageState extends State<CuisinesPage> {
                            
                           return InkWell(
                             onTap: () async {
-                            
+                              
                                recipeModel R=await DatabaseService(uid:user!.uid).getRecipe(RecipeId:Recipes?[i].id as String) ;
                                 // R.isLike=await DatabaseService(uid:user!.uid).isFavorite(RecipeId:Recipes?[i].id as String);
                                 Navigator.push(context,MaterialPageRoute(builder: (context) =>  cookPage(currentRecipe:R)));
@@ -178,7 +178,7 @@ class _CuisinesPageState extends State<CuisinesPage> {
                                           Text('Preparation time: ${Recipes?[i]['Time']}',style: TextStyle(fontSize: 15,color: Color.fromARGB(255, 138, 137, 137),fontWeight: FontWeight.w500,),),
                                           Text('Calories: ${Recipes?[i]['Calories']}',style: TextStyle(fontWeight: FontWeight.w500,fontSize: 15),),
                                          
-                                          Row(children:[Text(Recipes?[i]['isVeg']?"VEG ":"!VEG ",style: TextStyle(fontWeight: FontWeight.bold,color: Recipes?[i]['isVeg']?Color(0xFF00923F):Color(0xFFda251e)),),
+                                          Row(children:[Text(Recipes?[i]['isVeg']?"VEG ":"NON VEG ",style: TextStyle(fontWeight: FontWeight.bold,color: Recipes?[i]['isVeg']?Color(0xFF00923F):Color(0xFFda251e)),),
                                           Image(image: AssetImage(Recipes?[i]['isVeg']?"assets/veg.png":"assets/nonVeg.png"),height: 0.04*ht,width: 0.04*wt,)])
                                           
                                         ],

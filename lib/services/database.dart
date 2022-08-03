@@ -293,18 +293,26 @@ class DatabaseService {
               }
 
                  newitemQty= ind[item][0]-newitemQty;
+                 if(newitemQty>0){
                    await FirebaseFirestore.instance
         .collection('userInfo/${uid}/inventory')
         .doc(ingredients[keys[i]][2])
         .set({
       '${item}': [newitemQty, ind[item][1]]
-    }, SetOptions(merge: true));
+    }, SetOptions(merge: true));}
 
+                  else {
+                    await FirebaseFirestore.instance
+                    .collection('userInfo/${uid}/inventory')
+                     .doc(ingredients[keys[i]][2])
+                    .update({'${item}': FieldValue.delete()});
+
+                  }
 
 
            }
 
-
+      
 
   }
 

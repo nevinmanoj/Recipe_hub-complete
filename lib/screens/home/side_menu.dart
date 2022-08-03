@@ -63,8 +63,8 @@ class sideMenu extends StatelessWidget {
               Navigator.push(context,MaterialPageRoute(builder: (context) =>  Profile(name: name,phoneNumber: phoneNumber,)));},
           ),
           ListTile(
-            leading: Icon(Icons.settings),
-            title: Text('Settings'),
+            leading: Icon(Icons.history),
+            title: Text('Previosly Cooked'),
             onTap: () => {Navigator.push(context,MaterialPageRoute(builder: (context) =>  AboutScreen()))},
           ),
           ListTile(
@@ -90,6 +90,7 @@ class sideMenu extends StatelessWidget {
             leading: Icon(Icons.info),
             title: Text('About'),
             onTap: ()  {
+             
              Navigator.push(context,MaterialPageRoute(builder: (context) =>  AboutScreen()));
               },
           ),
