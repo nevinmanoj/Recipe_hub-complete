@@ -236,6 +236,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "rxdart",
+      "rootUri": "file:///C:/Users/nevin/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/rxdart-0.27.5",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "sky_engine",
       "rootUri": "file:///C:/src/flutter/bin/cache/pkg/sky_engine",
       "packageUri": "lib/",
@@ -296,7 +302,7 @@
       "languageVersion": "2.17"
     }
   ],
-  "generated": "2022-07-30T15:53:38.078129Z",
+  "generated": "2022-08-04T20:52:57.441193Z",
   "generator": "pub",
   "generatorVersion": "2.17.5"
 }

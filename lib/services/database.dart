@@ -1,9 +1,10 @@
 import 'dart:async';
-
+import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:intl/intl.dart';
 import 'package:untitled/shared/Constants.dart';
 import 'package:untitled/shared/classes.dart';
 
@@ -51,14 +52,31 @@ class DatabaseService {
         .set({
       '${item.name}': [item.qty, item.unit]
     }, SetOptions(merge: true));
+
+    //   DateTime currentPhoneDate = DateTime.now();
+    //   await FirebaseFirestore.instance
+    //     .collection('userTest')
+    //     .doc("ZHsayOhjPKkdbvyC7ZP7")
+    //     .set({
+    //   'history': {"$currentPhoneDate":"helo4"},
+    // },SetOptions(merge: true));
+
+    // var userdet= await FirebaseFirestore.instance.collection('userTest').doc('ZHsayOhjPKkdbvyC7ZP7').get();
+    // Map<String,dynamic> History = userdet.data()!['history'];
+    // var keys=History.keys.toList();
+    // keys.sort((b, a) => a.compareTo(b));
+    // for(int i=0;i<keys.length;i++)
+    // {var parsedDate = DateTime.parse('${keys[i]}');
+    // print('${History[keys[i]]} ${parsedDate}');}
   }
 
-  Future createFavorites() async {
-    return await FirebaseFirestore.instance
-        .collection('userInfo')
-        .doc(uid)
-        .update({
+  Future createFavoritesAndHistory() async {
+    await FirebaseFirestore.instance.collection('userInfo').doc(uid).update({
       'Favorites': [],
+    });
+
+    await FirebaseFirestore.instance.collection('userInfo').doc(uid).update({
+      'history': {},
     });
   }
 
@@ -82,15 +100,6 @@ class DatabaseService {
       });
     }
   }
-
-  // Future isFavorite({required String RecipeId})async{
-  //   final user =
-  //       await FirebaseFirestore.instance.collection('userInfo').doc(uid).get();
-  //       List favorites = user.data()!['Favorites'];
-        
-  //       bool isLike = favorites.contains(RecipeId);
-  //       return isLike;
-  // }
 
   Future getRecipe({required String RecipeId}) async {
     // print(RecipeId);
@@ -134,7 +143,7 @@ class DatabaseService {
     List<recipeModel> fav = [];
     for (int j = 0; j < favorites.length; j++) {
       fav.add(await getRecipe(RecipeId: favorites[j]));
-        // fav[j].isLike=true;
+      // fav[j].isLike=true;
     }
 
     return fav;
@@ -148,206 +157,210 @@ class DatabaseService {
         .update({itemname: FieldValue.delete()});
   }
 
- //main algorithm of inventory compare
+  //main algorithm of inventory compare
 
   Future<List<bool>> canCook({required var Recipes}) async {
+    List<bool> cC = [];
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection("userInfo/${uid}/inventory")
+        .get();
+    var inventList = querySnapshot.docs;
+    Map<String, int> inventMap = {};
+    for (int k = 0; k < inventList.length; k++) inventMap[inventList[k].id] = k;
 
-       List<bool> cC=[];
-        QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection("userInfo/${uid}/inventory").get();
-        var inventList = querySnapshot.docs;
-        Map<String,int> inventMap={};
-        for(int k=0;k<inventList.length;k++)
-          inventMap[inventList[k].id]=k;
+    //  print(inventMap);
+    Map<String, dynamic> inventSub = {};
 
-        //  print(inventMap);
-        Map<String,dynamic> inventSub={};
-         
-
-      for(int j=0;j<Recipes.length;j++)
-     {
+    for (int j = 0; j < Recipes.length; j++) {
       Map<String, dynamic> ingredients = Recipes[j]['ingre'];
-      var keys=ingredients.keys.toList();
+      var keys = ingredients.keys.toList();
       // print('**********${Recipes[j]['Title']}->${keys.length}**********');
       cC.add(true);
-      for(int i=0;i<keys.length;i++)
-        {
-               
-               //compare invent.id and ingredients[keys[i]][2]
-                var ind=inventList[inventMap[ingredients[keys[i]][2]] as int].data() as Map<String,dynamic>;
-                // var indKeys=ind.keys;
-                // var indItem=keys[i];
-                var item=keys[i].toLowerCase();
-                var itemQty=ingredients[keys[i]][0];
-                
-                  // print('${item}=> ${itemQty}<${ind[item]} ');
+      for (int i = 0; i < keys.length; i++) {
+        //compare invent.id and ingredients[keys[i]][2]
+        var ind = inventList[inventMap[ingredients[keys[i]][2]] as int].data()
+            as Map<String, dynamic>;
+        // var indKeys=ind.keys;
+        // var indItem=keys[i];
+        var item = keys[i].toLowerCase();
+        var itemQty = ingredients[keys[i]][0];
 
-                if(ind[item]==null)
-                 {cC[j]=false;break;}
-              
-                var newitemQty;
-            //convert tbsppon,etc ->kg,L ingredients[keys[i]][1]
-             if(ind[item][1]=='Kg'||ind[item][1]=='L')
-              {//convert ingre to kg or L
-                    if(itemQty!=null){
-                      // print(item);
-                    newitemQty=convertUnits(unit:ingredients[keys[i]][1] , qty: itemQty);}
-                  }
-              else{
-                  newitemQty=itemQty;
-              }
-          //compare values of invent.id and ingredients[keys[i]][0]
-                 if(!(newitemQty<=ind[item][0])){
-                 
-                  cC[j]=false;
-                  break;
+        // print('${item}=> ${itemQty}<${ind[item]} ');
 
-               }
-
+        if (ind[item] == null) {
+          cC[j] = false;
+          break;
         }
-        
+
+        var newitemQty;
+        //convert tbsppon,etc ->kg,L ingredients[keys[i]][1]
+        if (ind[item][1] == 'Kg' || ind[item][1] == 'L') {
+          //convert ingre to kg or L
+          if (itemQty != null) {
+            // print(item);
+            newitemQty =
+                convertUnits(unit: ingredients[keys[i]][1], qty: itemQty);
+          }
+        } else {
+          newitemQty = itemQty;
+        }
+        //compare values of invent.id and ingredients[keys[i]][0]
+        if (!(newitemQty <= ind[item][0])) {
+          //  print(item);
+          cC[j] = false;
+          break;
+        }
       }
-    
-      return cC;
     }
 
-    Future canCookSingle({required Map<String,dynamic> ingredients})async{
-      QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection("userInfo/${uid}/inventory").get();
-        var inventList = querySnapshot.docs;
-        Map<String,int> inventMap={};
-        for(int k=0;k<inventList.length;k++)
-          inventMap[inventList[k].id]=k;
-
-        //  print(inventMap);
-        Map<String,dynamic> inventSub={};
-       
-      var keys=ingredients.keys.toList();
-
-      for(int i=0;i<keys.length;i++)
-        {
-               
-               //compare invent.id and ingredients[keys[i]][2]
-                var ind=inventList[inventMap[ingredients[keys[i]][2]] as int].data() as Map<String,dynamic>;
-                // var indKeys=ind.keys;
-                // var indItem=keys[i];
-                var item=keys[i].toLowerCase();
-                var itemQty=ingredients[keys[i]][0];
-                
-                  // print('${item}=> ${itemQty}<${ind[item]} ');
-
-                if(ind[item]==null)
-                 {return false;}
-              
-                var newitemQty;
-            //convert tbsppon,etc ->kg,L ingredients[keys[i]][1]
-             if(ind[item][1]=='Kg'||ind[item][1]=='L')
-              {//convert ingre to kg or L
-                    if(itemQty!=null){
-                      // print(item);
-                    newitemQty=convertUnits(unit:ingredients[keys[i]][1] , qty: itemQty);}
-                  }
-              else{
-                  newitemQty=itemQty;
-              }
-          //compare values of invent.id and ingredients[keys[i]][0]
-                 if(!(newitemQty<=ind[item][0])){
-                 
-                  return false;
-                  
-
-               }
-          
-        }
-
-        return true;
-
-    }
-
-
-
-  Future UpdateInventory({required Map<String,dynamic> ingredients})async{
-        QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection("userInfo/${uid}/inventory").get();
-        var inventList = querySnapshot.docs;
-        Map<String,int> inventMap={};
-        for(int k=0;k<inventList.length;k++)
-          inventMap[inventList[k].id]=k;
-          Map<String,dynamic> inventSub={};
-       
-          var keys=ingredients.keys.toList();
-           for(int i=0;i<keys.length;i++){
-            var ind=inventList[inventMap[ingredients[keys[i]][2]] as int].data() as Map<String,dynamic>;
-                // var indKeys=ind.keys;
-                // var indItem=keys[i];
-                var item=keys[i].toLowerCase();
-                var itemQty=ingredients[keys[i]][0];
-                var newitemQty;
-
-
-                if(ind[item][1]=='Kg'||ind[item][1]=='L')
-              {//convert ingre to kg or L
-                    if(itemQty!=null){
-                      // print(item);
-                    newitemQty=convertUnits(unit:ingredients[keys[i]][1] , qty: itemQty);}
-                  }
-              else{
-                  newitemQty=itemQty;
-              }
-
-                 newitemQty= ind[item][0]-newitemQty;
-                 if(newitemQty>0){
-                   await FirebaseFirestore.instance
-        .collection('userInfo/${uid}/inventory')
-        .doc(ingredients[keys[i]][2])
-        .set({
-      '${item}': [newitemQty, ind[item][1]]
-    }, SetOptions(merge: true));}
-
-                  else {
-                    await FirebaseFirestore.instance
-                    .collection('userInfo/${uid}/inventory')
-                     .doc(ingredients[keys[i]][2])
-                    .update({'${item}': FieldValue.delete()});
-
-                  }
-
-
-           }
-
-      
-
+    return cC;
   }
 
+  Future canCookSingle({required Map<String, dynamic> ingredients}) async {
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection("userInfo/${uid}/inventory")
+        .get();
+    var inventList = querySnapshot.docs;
+    Map<String, int> inventMap = {};
+    for (int k = 0; k < inventList.length; k++) inventMap[inventList[k].id] = k;
 
+    //  print(inventMap);
+    Map<String, dynamic> inventSub = {};
 
+    var keys = ingredients.keys.toList();
 
+    for (int i = 0; i < keys.length; i++) {
+      //compare invent.id and ingredients[keys[i]][2]
+      var ind = inventList[inventMap[ingredients[keys[i]][2]] as int].data()
+          as Map<String, dynamic>;
+      // var indKeys=ind.keys;
+      // var indItem=keys[i];
+      var item = keys[i].toLowerCase();
+      var itemQty = ingredients[keys[i]][0];
+
+      // print('${item}=> ${itemQty}<${ind[item]} ');
+
+      if (ind[item] == null) {
+        return false;
+      }
+
+      var newitemQty;
+      //convert tbsppon,etc ->kg,L ingredients[keys[i]][1]
+      if (ind[item][1] == 'Kg' || ind[item][1] == 'L') {
+        //convert ingre to kg or L
+        if (itemQty != null) {
+          // print(item);
+          newitemQty =
+              convertUnits(unit: ingredients[keys[i]][1], qty: itemQty);
+        }
+      } else {
+        newitemQty = itemQty;
+      }
+      //compare values of invent.id and ingredients[keys[i]][0]
+      if (!(newitemQty <= ind[item][0])) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  Future UpdateInventory({required Map<String, dynamic> ingredients}) async {
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection("userInfo/${uid}/inventory")
+        .get();
+    var inventList = querySnapshot.docs;
+    Map<String, int> inventMap = {};
+    for (int k = 0; k < inventList.length; k++) inventMap[inventList[k].id] = k;
+    Map<String, dynamic> inventSub = {};
+
+    var keys = ingredients.keys.toList();
+    for (int i = 0; i < keys.length; i++) {
+      var ind = inventList[inventMap[ingredients[keys[i]][2]] as int].data()
+          as Map<String, dynamic>;
+      // var indKeys=ind.keys;
+      // var indItem=keys[i];
+      var item = keys[i].toLowerCase();
+      var itemQty = ingredients[keys[i]][0];
+      var newitemQty;
+
+      if (ind[item][1] == 'Kg' || ind[item][1] == 'L') {
+        //convert ingre to kg or L
+        if (itemQty != null) {
+          // print(item);
+          newitemQty =
+              convertUnits(unit: ingredients[keys[i]][1], qty: itemQty);
+        }
+      } else {
+        newitemQty = itemQty;
+      }
+
+      newitemQty = ind[item][0] - newitemQty;
+      if (newitemQty > 0) {
+        await FirebaseFirestore.instance
+            .collection('userInfo/${uid}/inventory')
+            .doc(ingredients[keys[i]][2])
+            .set({
+          '${item}': [newitemQty, ind[item][1]]
+        }, SetOptions(merge: true));
+      } else {
+        await FirebaseFirestore.instance
+            .collection('userInfo/${uid}/inventory')
+            .doc(ingredients[keys[i]][2])
+            .update({'${item}': FieldValue.delete()});
+      }
+    }
+  }
+
+  Future addHistory({required String RecipeId}) async {
+    DateTime currentPhoneDate = DateTime.now();
+    await FirebaseFirestore.instance.collection('userInfo').doc(uid).set({
+      'history': {"$currentPhoneDate": RecipeId},
+    }, SetOptions(merge: true));
+  }
+
+  Future getHistory() async {
+    final userinfo =
+        await FirebaseFirestore.instance.collection('userInfo').doc(uid).get();
+    Map<String, dynamic> history =
+        userinfo.data()!['history'] as Map<String, dynamic>;
+    var keys = history.keys.toList();
+    keys.sort((a, b) => b.compareTo(a));
+
+    int length = min(10, keys.length);
+    List<recipeModel> his = [];
+    List<String> dates = [];
+    List<String> Times = [];
+    for (int i = 0; i < length; i++) {
+      his.add(await getRecipe(RecipeId: history[keys[i]]));
+      var formattedDate = DateFormat.yMMMd().format(DateTime.parse(keys[i]));
+      var formattedTime = DateFormat('kk:mm a').format(DateTime.parse(keys[i]));
+      dates.add(formattedDate);
+      Times.add(formattedTime);
+    }
+    var result = [his, dates, Times];
+    return result;
+  }
 }
 
- double convertUnits({required String unit,required dynamic qty}){
-      unit=unit.toLowerCase();
-      var newQty=qty;
-      if(qty.runtimeType!=double)
-       newQty=qty.toDouble();
-       
+double convertUnits({required String unit, required dynamic qty}) {
+  unit = unit.toLowerCase();
+  var newQty = qty;
+  if (qty.runtimeType != double) newQty = qty.toDouble();
 
-      
-      if(unit=='teaspoon'||unit=='teaspoons'){
-        newQty=newQty*0.00492892;
-
-      }
-      else if(unit=='tablespoon'||unit=='tablespoons'){
-        newQty=newQty*0.0147868;
-      }
-      else if(unit=='cup'||unit=='cups'){
-        newQty=newQty*0.236588;
-      }
-      else if(unit=='g'){
-        newQty=newQty*0.001;
-      }
-      else if(unit=='Kg'||unit=='L'||unit=='kg'||unit=='l'){
-       newQty=newQty*1;
-      }
-      else{
-        print("passed unit error");
-        return -1;
-      }
-      return newQty;
+  if (unit == 'teaspoon' || unit == 'teaspoons') {
+    newQty = newQty * 0.00492892;
+  } else if (unit == 'tablespoon' || unit == 'tablespoons') {
+    newQty = newQty * 0.0147868;
+  } else if (unit == 'cup' || unit == 'cups') {
+    newQty = newQty * 0.236588;
+  } else if (unit == 'g') {
+    newQty = newQty * 0.001;
+  } else if (unit == 'Kg' || unit == 'L' || unit == 'kg' || unit == 'l') {
+    newQty = newQty * 1;
+  } else {
+    print("passed unit error");
+    return -1;
+  }
+  return newQty;
 }

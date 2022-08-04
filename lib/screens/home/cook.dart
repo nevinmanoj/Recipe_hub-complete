@@ -53,7 +53,9 @@ onPressed: ()async{
       bool canCook=await DatabaseService(uid: user!.uid).canCookSingle(ingredients:widget.currentRecipe.ingredients );
       
       if(canCook)
-      await DatabaseService(uid: user!.uid).UpdateInventory(ingredients: widget.currentRecipe.ingredients);
+      {await DatabaseService(uid: user!.uid).UpdateInventory(ingredients: widget.currentRecipe.ingredients);
+       await DatabaseService(uid: user!.uid).addHistory(RecipeId:  widget.currentRecipe.RecipeId);
+      }
 
       showDialog(
               context: context,

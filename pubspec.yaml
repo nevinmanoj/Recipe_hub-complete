@@ -43,6 +43,8 @@ dependencies:
   animations: ^2.0.3
   carousel_slider: ^4.1.1
   lottie: ^1.4.0
+  rxdart: ^0.27.5
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:

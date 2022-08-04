@@ -1,6 +1,5 @@
 // ignore: camel_case_types
-class recipeModel{
-
+class recipeModel {
   bool isLike;
   String RecipeId;
   int calories;
@@ -9,23 +8,60 @@ class recipeModel{
   String title;
   String img;
   bool isveg;
-  List preparation=[];
-  Map <String,dynamic> ingredients =Map();
+  List preparation = [];
+  Map<String, dynamic> ingredients = Map();
 
-  recipeModel({required this.calories,required this.cuisine,required this.time,required this.title,required this.RecipeId,
-  required this.img,required this.preparation,required this.ingredients,required this.isveg,required this.isLike});
-
+  recipeModel(
+      {required this.calories,
+      required this.cuisine,
+      required this.time,
+      required this.title,
+      required this.RecipeId,
+      required this.img,
+      required this.preparation,
+      required this.ingredients,
+      required this.isveg,
+      required this.isLike});
 }
 
-class Item{
-  
+class HistoryRecipeModel {
+  bool isLike;
+  String RecipeId;
+  int calories;
+  String cuisine;
+  String time;
+  String title;
+  String img;
+  bool isveg;
+  List preparation = [];
+  Map<String, dynamic> ingredients = Map();
+  String cookDate;
+  String cookTime;
+
+  HistoryRecipeModel(
+      {required this.calories,
+      required this.cuisine,
+      required this.time,
+      required this.title,
+      required this.RecipeId,
+      required this.img,
+      required this.preparation,
+      required this.ingredients,
+      required this.isveg,
+      required this.isLike,
+      required this.cookTime,
+      required this.cookDate});
+}
+
+class Item {
   String name;
   double qty;
   String unit;
   String category;
 
-  Item({required this.name,required this.qty,required this.unit,required this.category});
-
-
+  Item(
+      {required this.name,
+      required this.qty,
+      required this.unit,
+      required this.category});
 }
-
