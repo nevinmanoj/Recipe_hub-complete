@@ -12,6 +12,7 @@ import 'package:untitled/screens/home/sideMenu/history.dart';
 import 'package:untitled/services/database.dart';
 import 'package:untitled/shared/Constants.dart';
 import 'package:untitled/shared/classes.dart';
+import 'package:untitled/shared/search.dart';
 import 'sideMenu/profile.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -94,6 +95,8 @@ class sideMenu extends StatelessWidget {
             leading: Icon(Icons.info),
             title: Text('About'),
             onTap: () {
+              // Navigator.push(context,
+              //     MaterialPageRoute(builder: (context) => SearchBarScreen()));
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => AboutScreen()));
             },

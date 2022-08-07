@@ -48,7 +48,7 @@ class _HistoryPageState extends State<HistoryPage> {
               builder: (context, historySnap) {
                 if (historySnap.data == null)
                   // ignore: curly_braces_in_flow_control_structures
-                  return LoadCusines();
+                  return LoadHistory();
 
                 var result = historySnap.data as List?;
                 List<recipeModel>? historyList =
@@ -60,28 +60,8 @@ class _HistoryPageState extends State<HistoryPage> {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Color(0xffEAE8E8),
-                      ),
-                      margin: EdgeInsets.all(10),
-                      height: 48,
-                      width: wt,
-                      child: TextField(
-                        decoration: InputDecoration(
-                            suffixIcon: Icon(Icons.search),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: BorderSide(color: Color(0xffEAE8E8)),
-                            ),
-                            hintText: 'Search for recipes',
-                            hintStyle: TextStyle(
-                              fontSize: 15.0,
-                              color: Color(0xff707070),
-                            ),
-                            border: InputBorder.none),
-                      ),
+                    SizedBox(
+                      height: ht * 0.01,
                     ),
                     Expanded(
                         child: Align(

@@ -1,5 +1,10 @@
+// ignore_for_file: prefer_const_constructors
+
+import 'dart:math';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
@@ -7,29 +12,43 @@ import 'package:untitled/screens/home/cook.dart';
 import 'package:untitled/screens/home/cusines.dart';
 import 'package:untitled/screens/home/inventory/inventoryMain.dart';
 import 'package:untitled/screens/home/side_menu.dart';
-import 'package:untitled/services/auth.dart';
 import 'package:untitled/services/database.dart';
 import 'package:untitled/shared/Constants.dart';
 import 'package:untitled/shared/classes.dart';
+import 'package:untitled/shared/loading.dart';
+import 'package:untitled/shared/search.dart';
 
+final FirebaseAuth _auth = FirebaseAuth.instance;
+final User? user = _auth.currentUser;
 
-class home extends StatelessWidget {
-  // String RecipeId=rec[1];
+class home extends StatefulWidget {
+  @override
+  State<home> createState() => new _homeState();
+}
+
+class _homeState extends State<home> {
   @override
   Widget build(BuildContext context) {
+    double wt = MediaQuery.of(context).size.width;
+    double ht = MediaQuery.of(context).size.height;
+
     return Scaffold(
-      
-      drawer:sideMenu(),
+      drawer: sideMenu(),
       appBar: AppBar(
         // title: Text('Recipe Hub'),
-        
 
         actions: [
-                  InkWell(onTap: () => {Navigator.push(context,CupertinoPageRoute(builder:(context)=>Inventory() ))},
-                    child: Container(child:Lottie.network('https://assets1.lottiefiles.com/packages/lf20_2mny7oza.json')))
+          InkWell(
+              onTap: () => {
+                    Navigator.push(context,
+                        CupertinoPageRoute(builder: (context) => Inventory()))
+                  },
+              child: Container(
+                  child: Lottie.network(
+                      'https://assets1.lottiefiles.com/packages/lf20_2mny7oza.json')))
           // IconButton(
           //     onPressed: () {
-                 
+
           //       Navigator.push(context,CupertinoPageRoute(builder:(context)=>Inventory() ));
           //     },
           //     icon: Icon(
@@ -48,29 +67,30 @@ class home extends StatelessWidget {
               SizedBox(
                 height: 10,
               ),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Color(0xffEAE8E8),
-                ),
-                margin: EdgeInsets.all(10),
-                height: 48,
-                width: 390,
-                child: TextField(
-                  decoration: InputDecoration(
-                      suffixIcon: Icon(Icons.search),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(color: Color(0xffEAE8E8)),
-                      ),
-                      hintText: 'Search',
-                      hintStyle: TextStyle(
-                        fontSize: 15.0,
-                        color: Color(0xff707070),
-                      ),
-                      border: InputBorder.none),
-                ),
-              ),
+              searchBar(),
+              // Container(
+              //   decoration: BoxDecoration(
+              //     borderRadius: BorderRadius.circular(10),
+              //     color: Color(0xffEAE8E8),
+              //   ),
+              //   margin: EdgeInsets.all(10),
+              //   height: 48,
+              //   width: 390,
+              //   child: TextField(
+              //     decoration: InputDecoration(
+              //         suffixIcon: Icon(Icons.search),
+              //         enabledBorder: OutlineInputBorder(
+              //           borderRadius: BorderRadius.circular(10),
+              //           borderSide: BorderSide(color: Color(0xffEAE8E8)),
+              //         ),
+              //         hintText: 'Search',
+              //         hintStyle: TextStyle(
+              //           fontSize: 15.0,
+              //           color: Color(0xff707070),
+              //         ),
+              //         border: InputBorder.none),
+              //   ),
+              // ),
               SizedBox(
                 height: 15,
               ),
@@ -83,13 +103,17 @@ class home extends StatelessWidget {
                     Column(
                       children: [
                         InkWell(
-                          onTap: ()async{
+                          onTap: () async {
                             //  recipes R=await DatabaseService(uid:user!.uid).getRecipe(RecipeId:RecipeId) ;
-                            
+
                             // Navigator.push(context,MaterialPageRoute(builder: (context) =>  cookPage(currentRecipe:R)));
 
-                            Navigator.push(context,MaterialPageRoute(builder:(context)=>CuisinesPage(Cuisine:"Indian") ));
-                            },
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        CuisinesPage(Cuisine: "Indian")));
+                          },
                           child: Container(
                             width: 100,
                             height: 100,
@@ -121,8 +145,11 @@ class home extends StatelessWidget {
                     InkWell(
                       onTap: () {
                         // DatabaseService(uid:user!.uid).getRecipeWithCuisine(Cuisine: "American");
-                        Navigator.push(context,MaterialPageRoute(builder:(context)=>CuisinesPage(Cuisine:"American") ));
-                         
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    CuisinesPage(Cuisine: "American")));
                       },
                       child: Column(
                         children: [
@@ -152,9 +179,13 @@ class home extends StatelessWidget {
                     Column(
                       children: [
                         InkWell(
-                          onTap: () {Navigator.push(context,MaterialPageRoute(builder:(context)=>CuisinesPage(Cuisine:"Chinese") ));
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        CuisinesPage(Cuisine: "Chinese")));
                             // Navigator.push(context,MaterialPageRoute(builder:(context)=>CuisinesPage() ));
-                             
                           },
                           child: Container(
                             width: 100,
@@ -183,7 +214,11 @@ class home extends StatelessWidget {
                       children: [
                         InkWell(
                           onTap: () {
-                            Navigator.push(context,MaterialPageRoute(builder:(context)=>CuisinesPage(Cuisine:"Italian") ));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        CuisinesPage(Cuisine: "Italian")));
                           },
                           child: Container(
                             width: 100,
@@ -213,7 +248,11 @@ class home extends StatelessWidget {
                     Column(
                       children: [
                         InkWell(
-                          onTap: () => Navigator.push(context,MaterialPageRoute(builder:(context)=>CuisinesPage(Cuisine:"Japanese") )),
+                          onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      CuisinesPage(Cuisine: "Japanese"))),
                           child: Container(
                             width: 100,
                             height: 100,
@@ -248,154 +287,172 @@ class home extends StatelessWidget {
               ),
               Container(
                 height: MediaQuery.of(context).size.height * 0.4,
-                child: ListView(physics: NeverScrollableScrollPhysics(),
-                  children: [
-                  CarouselSlider(
-                    options: CarouselOptions(
-                      height: 375.0,
-                      enlargeCenterPage: true,
-                      autoPlay: true,
-                      aspectRatio: 16 / 9,
-                      autoPlayCurve: Curves.fastOutSlowIn,
-                      enableInfiniteScroll: true,
-                      autoPlayAnimationDuration: Duration(milliseconds: 800),
-                      viewportFraction: 0.8,
-                    ),
-                    items: [
-                      Container(
-                        margin: EdgeInsets.all(6.0),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8.0),
-                          image: DecorationImage(
-                            image: AssetImage('assets/chef.jpg'),
-                            fit: BoxFit.cover,
-                          ),
+                child: ListView(
+                    physics: NeverScrollableScrollPhysics(),
+                    children: [
+                      CarouselSlider(
+                        options: CarouselOptions(
+                          height: 375.0,
+                          enlargeCenterPage: true,
+                          autoPlay: true,
+                          aspectRatio: 16 / 9,
+                          autoPlayCurve: Curves.fastOutSlowIn,
+                          enableInfiniteScroll: true,
+                          autoPlayAnimationDuration:
+                              Duration(milliseconds: 800),
+                          viewportFraction: 0.8,
                         ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.all(6.0),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8.0),
-                          image: DecorationImage(
-                            image: AssetImage('assets/recipes.jpg'),
-                            fit: BoxFit.cover,
+                        items: [
+                          Container(
+                            margin: EdgeInsets.all(6.0),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8.0),
+                              image: DecorationImage(
+                                image: AssetImage('assets/chef.jpg'),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.all(6.0),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8.0),
-                          image: DecorationImage(
-                            image: AssetImage('assets/buddhabowl.jpg'),
-                            fit: BoxFit.cover,
+                          Container(
+                            margin: EdgeInsets.all(6.0),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8.0),
+                              image: DecorationImage(
+                                image: AssetImage('assets/recipes.jpg'),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.all(6.0),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8.0),
-                          image: DecorationImage(
-                            image: AssetImage('assets/dalgona.jpg'),
-                            fit: BoxFit.cover,
+                          Container(
+                            margin: EdgeInsets.all(6.0),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8.0),
+                              image: DecorationImage(
+                                image: AssetImage('assets/buddhabowl.jpg'),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.all(6.0),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8.0),
-                          image: DecorationImage(
-                            image: AssetImage('assets/brown.jpg'),
-                            fit: BoxFit.cover,
+                          Container(
+                            margin: EdgeInsets.all(6.0),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8.0),
+                              image: DecorationImage(
+                                image: AssetImage('assets/dalgona.jpg'),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    ],
-                  )
-                ]),
+                          Container(
+                            margin: EdgeInsets.all(6.0),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8.0),
+                              image: DecorationImage(
+                                image: AssetImage('assets/brown.jpg'),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                    ]),
               ),
               SizedBox(
                 height: 35,
               ),
-
-              
               Container(
                 padding: EdgeInsets.only(
                   top: 15,
                 ),
                 width: double.infinity,
-                height: 300,
+                height: ht * 0.21,
                 // margin: EdgeInsets.all(6.0),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30.0),
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(30),
+                      topLeft: Radius.circular(30)),
                   color: appYellow,
                 ),
                 child: Column(
                   children: [
-                    Text(
-                      "Recently Cooked!",
-                      // textAlign: TextAlign.center,
-                      style:
-                          TextStyle(fontWeight: FontWeight.w600, fontSize: 19),
-                    ),
                     Padding(
-                      padding: const EdgeInsets.only(top: 15.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Column(
-                            children: [
-                              Container(
-                                // margin: EdgeInsets.only(
-                                //   top: 40,
-                                //   right: 50,
-                                // ),
-                                width: 135,
-                                height: 135,
-                                decoration: BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(10)),
-                                    image: new DecorationImage(
-                                        image: AssetImage('assets/indian.jpg'),
-                                        // Text('indian'),
-                                        fit: BoxFit.cover)),
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Text(
-                                "Recent 1",
-                              )
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              Container(
-                                // margin: EdgeInsets.only(
-                                //   top: 40,
-                                //   right: 70,
-                                // ),
-                                width: 135,
-                                height: 135,
-                                decoration: BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(10)),
-                                    image: new DecorationImage(
-                                        image: AssetImage('assets/indian.jpg'),
-                                        // Text('indian'),
-                                        fit: BoxFit.cover)),
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Text("Recent 2"),
-                            ],
-                          ),
-                        ],
-                      ),
-                    )
+                      padding: EdgeInsets.fromLTRB(0, 0, 0, ht * 0.01),
+                      child: Center(
+                          child: Text("Recently Cooked",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w500, fontSize: 22))),
+                    ),
+                    FutureBuilder(
+                        future: DatabaseService(uid: user!.uid).getHistory(),
+                        builder: (context, historySnap) {
+                          if (historySnap.data == null)
+                            return Expanded(child: LoadHistory());
+                          var result = historySnap.data as List?;
+                          List<recipeModel>? historyList =
+                              result![0] as List<recipeModel>?;
+                          int length = min(2, historyList!.length);
+                          // print(length);
+                          return Expanded(
+                              child: Align(
+                            alignment: Alignment.topCenter,
+                            child: SizedBox(
+                              width: wt * 0.95,
+                              child: GridView.builder(
+                                  physics: NeverScrollableScrollPhysics(),
+                                  gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    childAspectRatio: 0.6,
+                                  ),
+                                  itemCount: length,
+                                  itemBuilder: (BuildContext context, int i) {
+                                    return InkWell(
+                                      onTap: () async {
+                                        recipeModel R = await DatabaseService(
+                                                uid: user!.uid)
+                                            .getRecipe(
+                                                RecipeId:
+                                                    historyList[i].RecipeId);
+                                        // R.isLike=await DatabaseService(uid:user!.uid).isFavorite(RecipeId:Recipes?[i].id as String);
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => cookPage(
+                                                    currentRecipe: R)));
+                                      },
+                                      child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              height: 0.1 * ht,
+                                              width: wt * 0.25,
+                                              decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                    image: NetworkImage(
+                                                        historyList[i].img),
+                                                    fit: BoxFit.fill,
+                                                  ),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          15)),
+                                            ),
+                                            Align(
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                historyList[i].title,
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: 20,
+                                                ),
+                                              ),
+                                            ),
+                                          ]),
+                                    );
+                                  }),
+                            ),
+                          ));
+                        }),
                   ],
                 ),
               ),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:untitled/services/database.dart';
 import 'package:untitled/shared/Constants.dart';
 import 'package:untitled/shared/classes.dart';
+
 String newUnit = units[0];
 String qty = "";
 double quantity = 0;
@@ -19,7 +20,7 @@ class EditItem extends StatefulWidget {
 }
 
 class _MyWidgetState extends State<EditItem> {
-   final _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     double wt = MediaQuery.of(context).size.width;
@@ -30,73 +31,70 @@ class _MyWidgetState extends State<EditItem> {
               context: context,
               builder: (BuildContext context) {
                 return Center(
-                    child: SizedBox(height: ht*0.7,
-                      child: AlertDialog(
-                        insetPadding: EdgeInsets.fromLTRB(
-                          0,
-                          0,
-                          0,
-                          ht * 0.1,
-                        ),
-                        title: Center(child: Text("Enter New Quantity ")),
-                        content: Form(
-                            key: _formKey,
-                            child: Column(
-                              children: [
-                                Text("Item Name: ${widget.item}"),
-                                
-                                ItemQuantity(),
-                                SizedBox(
-                                  width: 170,
-                                  child: ElevatedButton(
-                                    onPressed: () async {
-                                      if (_formKey.currentState!.validate()) {
-                                        quantity = double.parse(qty);
+                    child: SizedBox(
+                  height: ht * 0.7,
+                  child: AlertDialog(
+                    insetPadding: EdgeInsets.fromLTRB(
+                      0,
+                      0,
+                      0,
+                      ht * 0.1,
+                    ),
+                    title: Center(child: Text("Enter New Quantity ")),
+                    content: Form(
+                        key: _formKey,
+                        child: Column(
+                          children: [
+                            Text("Item Name: ${widget.item}"),
+                            ItemQuantity(),
+                            SizedBox(
+                              width: 170,
+                              child: ElevatedButton(
+                                onPressed: () async {
+                                  if (_formKey.currentState!.validate()) {
+                                    quantity = double.parse(qty);
 
-                                        Item I = Item(
-                                            name: widget.item,
-                                            qty: quantity,
-                                            unit: newUnit,
-                                            category: widget.category);
-                                        final r =
-                                            await DatabaseService(uid: user!.uid)
-                                                .addInventory(I);
+                                    Item I = Item(
+                                        name: widget.item,
+                                        qty: quantity,
+                                        unit: newUnit,
+                                        category: widget.category);
+                                    final r =
+                                        await DatabaseService(uid: user!.uid)
+                                            .addInventory(I);
 
-                                        Navigator.pop(context);
-                                      }
-                                    },
-                                    style: ButtonStyle(
-                                        shape: MaterialStateProperty.all<
-                                                RoundedRectangleBorder>(
-                                            RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                        )),
-                                        backgroundColor:
-                                            MaterialStateProperty.all<Color>(
-                                                Color(0xEDF2D308))),
-                                    child: Center(
-                                        child: Text("Update",
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 16))),
-                                  ),
-                                ),
-                              ],
-                            )),
-
-
-                      ),
-                    ));
+                                    Navigator.pop(context);
+                                  }
+                                },
+                                style: ButtonStyle(
+                                    shape: MaterialStateProperty.all<
+                                            RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    )),
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            appYellow)),
+                                child: Center(
+                                    child: Text("Update",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16))),
+                              ),
+                            ),
+                          ],
+                        )),
+                  ),
+                ));
               });
         },
-        icon: Icon(color:appYellow,
+        icon: Icon(
+          color: appYellow,
           Icons.edit,
         ));
   }
 }
-
 
 class ItemQuantity extends StatefulWidget {
   const ItemQuantity({Key? key}) : super(key: key);
@@ -186,4 +184,3 @@ class _ItemQuantityState extends State<ItemQuantity> {
     );
   }
 }
-

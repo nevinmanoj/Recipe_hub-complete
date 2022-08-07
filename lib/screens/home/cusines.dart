@@ -2,16 +2,25 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:untitled/screens/home/cook.dart';
 import 'package:untitled/screens/home/side_menu.dart';
 import 'package:untitled/services/database.dart';
 import 'package:untitled/shared/Constants.dart';
 import 'package:untitled/shared/classes.dart';
+import 'package:untitled/shared/filter.dart';
 import 'package:untitled/shared/loading.dart';
+import 'package:untitled/shared/search.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final User? user = _auth.currentUser;
+bool showFilter = false;
+bool? isVeg;
+var _value;
+
+var curStream;
 
 class CuisinesPage extends StatefulWidget {
   String Cuisine;
@@ -23,9 +32,87 @@ class CuisinesPage extends StatefulWidget {
 class _CuisinesPageState extends State<CuisinesPage> {
   @override
   Widget build(BuildContext context) {
+    var temp = FirebaseFirestore.instance
+        .collection('Recipes')
+        .where('Cuisine', isEqualTo: widget.Cuisine);
+    var defaultS = temp.snapshots();
+
+    // var defaultS = FirebaseFirestore.instance
+    //     .collection('Recipes')
+    //     .where('Cuisine', isEqualTo: widget.Cuisine)
+    //     .snapshots();
+
     double ht = MediaQuery.of(context).size.height;
     double wt = MediaQuery.of(context).size.width;
     return Scaffold(
+        floatingActionButton: SizedBox(
+          width: wt * 0.2,
+          child: FloatingActionButton(
+            shape: ContinuousRectangleBorder(
+                borderRadius: BorderRadius.circular(100)),
+            // RoundedRectangleBorder(),
+            child: Text(
+              'Filters',
+              style: TextStyle(fontSize: 18),
+            ),
+            onPressed: () {
+              // setState(() {
+              //   showFilter = !showFilter;
+              // });
+              //   showDialog(
+              //       context: context,
+              //       builder: (BuildContext context) {
+              //         return Center(
+              //             child: SizedBox(
+              //           height: ht * 0.5,
+              //           child: AlertDialog(
+              //               insetPadding: EdgeInsets.fromLTRB(
+              //                 0,
+              //                 0,
+              //                 0,
+              //                 ht * 0.1,
+              //               ),
+              //               title: Center(
+              //                   child: Text(
+              //                 "Select your Filters",
+              //                 style: TextStyle(fontWeight: FontWeight.bold),
+              //               )),
+              //               content: StatefulBuilder(builder:
+              //                   (BuildContext context, StateSetter setState) {
+              //                 return Column(children: [
+              //                   Form(
+              //                       child: Column(
+              //                     children: <Widget>[
+              //                       for (int i = 1; i <= 3; i++)
+              //                         ListTile(
+              //                           title: Text(
+              //                             'Radio $i',
+              //                           ),
+              //                           leading: Radio(
+              //                             activeColor: appYellow,
+              //                             value: i,
+              //                             groupValue: _value,
+              //                             onChanged: i == 5
+              //                                 ? null
+              //                                 : (value) {
+              //                                     print(value);
+              //                                     setState(
+              //                                       () {
+              //                                         _value = value;
+              //                                       },
+              //                                     );
+              //                                   },
+              //                           ),
+              //                         ),
+              //                     ],
+              //                   ))
+              //                 ]);
+              //               })),
+              //         ));
+              //       });
+            },
+          ),
+        ),
         appBar: AppBar(
           title: Padding(
             padding: EdgeInsets.fromLTRB(wt * 0.2, 0, 0, 0),
@@ -40,24 +127,9 @@ class _CuisinesPageState extends State<CuisinesPage> {
           backgroundColor: appYellow,
         ),
         body: StreamBuilder<QuerySnapshot>(
-            stream: FirebaseFirestore.instance
-                .collection('Recipes')
-                .where('Cuisine', isEqualTo: widget.Cuisine)
-                .snapshots(),
+            stream: defaultS,
             builder: (context, RecipeSnapshot) {
               var Recipes = RecipeSnapshot.data?.docs;
-              // List<bool> canCook=[];
-              // if(Recipes!=null)
-              // {
-              //   var length=Recipes.length;
-              // for(int j=0;j<length;j++){
-              //   Map<String, dynamic> ingredients = Recipes[j]['ingre'];
-              //   canCook.add(false);
-
-              //   // canCook.add( DatabaseService(uid: user!.uid).canCook(ingredients: ingredients);
-
-              // }
-              // }
 
               if (RecipeSnapshot.connectionState == ConnectionState.waiting) {
                 return Center(
@@ -77,30 +149,32 @@ class _CuisinesPageState extends State<CuisinesPage> {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Color(0xffEAE8E8),
-                          ),
-                          margin: EdgeInsets.all(10),
-                          height: 48,
-                          width: wt,
-                          child: TextField(
-                            decoration: InputDecoration(
-                                suffixIcon: Icon(Icons.search),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide:
-                                      BorderSide(color: Color(0xffEAE8E8)),
-                                ),
-                                hintText: 'Search for recipes',
-                                hintStyle: TextStyle(
-                                  fontSize: 15.0,
-                                  color: Color(0xff707070),
-                                ),
-                                border: InputBorder.none),
-                          ),
-                        ),
+                        searchBar(),
+
+                        // Container(
+                        //   decoration: BoxDecoration(
+                        //     borderRadius: BorderRadius.circular(10),
+                        //     color: Color(0xffEAE8E8),
+                        //   ),
+                        //   margin: EdgeInsets.all(10),
+                        //   height: 48,
+                        //   width: wt,
+                        //   child: TextField(
+                        //     decoration: InputDecoration(
+                        //         suffixIcon: Icon(Icons.search),
+                        //         enabledBorder: OutlineInputBorder(
+                        //           borderRadius: BorderRadius.circular(10),
+                        //           borderSide:
+                        //               BorderSide(color: Color(0xffEAE8E8)),
+                        //         ),
+                        //         hintText: 'Search for recipes',
+                        //         hintStyle: TextStyle(
+                        //           fontSize: 15.0,
+                        //           color: Color(0xff707070),
+                        //         ),
+                        //         border: InputBorder.none),
+                        //   ),
+                        // ),
                         // Padding(
                         //   padding:  EdgeInsets.fromLTRB(wt*0.095, 0, 0, 10),
                         //   child: Text("${widget.Cuisine} Cuisine",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
@@ -294,7 +368,40 @@ class _CuisinesPageState extends State<CuisinesPage> {
                               ),
                             ),
                           ),
-                        )
+                        ),
+
+                        // if (showFilter)
+                        //   SlidingUpPanel(
+                        //     panel: StatefulBuilder(builder:
+                        //         (BuildContext context, StateSetter setState) {
+                        //       return Form(
+                        //           child: Column(
+                        //         children: <Widget>[
+                        //           for (int i = 1; i <= 3; i++)
+                        //             ListTile(
+                        //               title: Text(
+                        //                 'Radio $i',
+                        //               ),
+                        //               leading: Radio(
+                        //                 activeColor: appYellow,
+                        //                 value: i,
+                        //                 groupValue: _value,
+                        //                 onChanged: i == 5
+                        //                     ? null
+                        //                     : (value) {
+                        //                         print(value);
+                        //                         setState(
+                        //                           () {
+                        //                             _value = value;
+                        //                           },
+                        //                         );
+                        //                       },
+                        //               ),
+                        //             ),
+                        //         ],
+                        //       ));
+                        //     }),
+                        //   )
                       ],
                     );
                   });

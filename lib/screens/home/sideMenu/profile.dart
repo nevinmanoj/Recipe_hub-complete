@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:untitled/shared/Constants.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 // final Future<UserAccountsDrawerHeader> user = _auth.currentUser();
@@ -40,7 +41,7 @@ class _ProfileState extends State<Profile> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFFF8DA19),
+        backgroundColor: appYellow,
       ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(15, 12, 10, 0),
@@ -86,7 +87,7 @@ class _ProfileState extends State<Profile> {
                       },
                       child: Text('EDIT',
                           style: TextStyle(
-                              color: Colors.yellow[600],
+                              color: appYellow,
                               fontSize: 15,
                               fontWeight: FontWeight.bold))),
               ],
@@ -118,7 +119,7 @@ class _ProfileState extends State<Profile> {
                             style: ButtonStyle(
                                 backgroundColor:
                                     MaterialStateProperty.all<Color>(
-                                        Color(0xEDF2D308)))),
+                                        appYellow))),
                       ),
                       SizedBox(
                         height: 45,
@@ -129,7 +130,7 @@ class _ProfileState extends State<Profile> {
                             },
                             child: Text(
                               'CANCEL',
-                              style: TextStyle(color: Color(0xEDF2D308)),
+                              style: TextStyle(color: appYellow),
                             ),
                             style: ButtonStyle(
                                 backgroundColor:
@@ -186,7 +187,7 @@ class _ProfileState extends State<Profile> {
                       },
                       child: Text('EDIT',
                           style: TextStyle(
-                              color: Colors.yellow[600],
+                              color: appYellow,
                               fontSize: 15,
                               fontWeight: FontWeight.bold))),
               ],
@@ -218,7 +219,7 @@ class _ProfileState extends State<Profile> {
                             style: ButtonStyle(
                                 backgroundColor:
                                     MaterialStateProperty.all<Color>(
-                                        Color(0xEDF2D308)))),
+                                        appYellow))),
                       ),
                       SizedBox(
                         height: 45,
@@ -229,7 +230,7 @@ class _ProfileState extends State<Profile> {
                             },
                             child: Text(
                               'CANCEL',
-                              style: TextStyle(color: Color(0xEDF2D308)),
+                              style: TextStyle(color: appYellow),
                             ),
                             style: ButtonStyle(
                                 backgroundColor:

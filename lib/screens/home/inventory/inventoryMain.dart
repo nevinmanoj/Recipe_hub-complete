@@ -30,30 +30,7 @@ class _inventoryState extends State<Inventory> {
         children: [
           Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Color(0xffEAE8E8),
-              ),
-              margin: EdgeInsets.all(10),
-              height: 48,
-              width: 420,
-              child: TextField(
-                decoration: InputDecoration(
-                    suffixIcon: Icon(Icons.search),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(color: Color(0xffEAE8E8)),
-                    ),
-                    hintText: 'Search',
-                    hintStyle: TextStyle(
-                      fontSize: 15.0,
-                      color: Color(0xff707070),
-                    ),
-                    border: InputBorder.none),
-              ),
-            ),
-            Container(
-              height: 15,
+              height: 20,
             ),
             AddItem(),
             Expanded(

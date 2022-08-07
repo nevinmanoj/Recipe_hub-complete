@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 
-//  const appYellow = Color(0xffffa31a);
+// const appYellow = Color(0xffFFEA11);
 const appYellow = Color(0xffF8DA19);
-
-
 
 List<String> categories = [
   'Fruits',
@@ -19,11 +17,7 @@ List<String> categories = [
   'Other',
 ];
 
-List<String> units = [
-  'Kg',
-  'L',
-  'Nos'
-];
+List<String> units = ['Kg', 'L', 'Nos'];
 
 List<String> images = [
   'https://i.imgur.com/4HmfoZE.jpg',

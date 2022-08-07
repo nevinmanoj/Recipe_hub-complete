@@ -17,8 +17,6 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
 final User? user = _auth.currentUser;
 
 class AddItem extends StatefulWidget {
-  
-  
   @override
   State<AddItem> createState() => _AddItemState();
 }
@@ -32,14 +30,19 @@ class _AddItemState extends State<AddItem> {
     return Container(
       child: Align(
         alignment: Alignment.center,
-        child: SizedBox(height: ht*0.05,width: wt*0.26,
+        child: SizedBox(
+          height: ht * 0.05,
+          width: wt * 0.26,
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
               primary: appYellow,
             ),
             child: Text(
               "Add Item",
-              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold,fontSize: 18),
+              style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18),
             ),
             onPressed: () {
               setState(() {
@@ -86,9 +89,9 @@ class _AddItemState extends State<AddItem> {
                                             qty: quantity,
                                             unit: newUnit,
                                             category: newcategory);
-                                        final r =
-                                            await DatabaseService(uid: user!.uid)
-                                                .addInventory(I);
+                                        final r = await DatabaseService(
+                                                uid: user!.uid)
+                                            .addInventory(I);
 
                                         Navigator.pop(context);
                                       }
@@ -102,7 +105,7 @@ class _AddItemState extends State<AddItem> {
                                         )),
                                         backgroundColor:
                                             MaterialStateProperty.all<Color>(
-                                                Color(0xEDF2D308))),
+                                                appYellow)),
                                     child: Center(
                                         child: Text("Add to Inventory",
                                             style: TextStyle(
@@ -168,8 +171,6 @@ class _ItemNameState extends State<ItemName> {
 }
 
 class Category extends StatefulWidget {
-  
-
   @override
   State<Category> createState() => _CategoryState();
 }

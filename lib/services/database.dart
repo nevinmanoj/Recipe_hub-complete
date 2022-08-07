@@ -52,22 +52,6 @@ class DatabaseService {
         .set({
       '${item.name}': [item.qty, item.unit]
     }, SetOptions(merge: true));
-
-    //   DateTime currentPhoneDate = DateTime.now();
-    //   await FirebaseFirestore.instance
-    //     .collection('userTest')
-    //     .doc("ZHsayOhjPKkdbvyC7ZP7")
-    //     .set({
-    //   'history': {"$currentPhoneDate":"helo4"},
-    // },SetOptions(merge: true));
-
-    // var userdet= await FirebaseFirestore.instance.collection('userTest').doc('ZHsayOhjPKkdbvyC7ZP7').get();
-    // Map<String,dynamic> History = userdet.data()!['history'];
-    // var keys=History.keys.toList();
-    // keys.sort((b, a) => a.compareTo(b));
-    // for(int i=0;i<keys.length;i++)
-    // {var parsedDate = DateTime.parse('${keys[i]}');
-    // print('${History[keys[i]]} ${parsedDate}');}
   }
 
   Future createFavoritesAndHistory() async {
@@ -296,6 +280,7 @@ class DatabaseService {
       }
 
       newitemQty = ind[item][0] - newitemQty;
+      newitemQty = double.parse(newitemQty.toStringAsFixed(4));
       if (newitemQty > 0) {
         await FirebaseFirestore.instance
             .collection('userInfo/${uid}/inventory')
@@ -363,4 +348,9 @@ double convertUnits({required String unit, required dynamic qty}) {
     return -1;
   }
   return newQty;
+}
+
+double dp(double val, int places) {
+  num mod = pow(10.0, places);
+  return ((val * mod).round().toDouble() / mod);
 }

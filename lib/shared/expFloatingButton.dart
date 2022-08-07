@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
- 
+import 'package:untitled/shared/Constants.dart';
+
 @immutable
 class ExpandableFabClass extends StatefulWidget {
   const ExpandableFabClass({
@@ -9,21 +10,21 @@ class ExpandableFabClass extends StatefulWidget {
     required this.distanceBetween,
     required this.subChildren,
   }) : super(key: key);
- 
+
   final bool? isInitiallyOpen;
   final double distanceBetween;
   final List<Widget> subChildren;
- 
+
   @override
   _ExpandableFabClassState createState() => _ExpandableFabClassState();
 }
- 
+
 class _ExpandableFabClassState extends State<ExpandableFabClass>
     with SingleTickerProviderStateMixin {
   late final AnimationController _animationController;
   late final Animation<double> _expandAnimationFab;
   bool _open = false;
- 
+
   @override
   void initState() {
     super.initState();
@@ -39,13 +40,13 @@ class _ExpandableFabClassState extends State<ExpandableFabClass>
       parent: _animationController,
     );
   }
- 
+
   @override
   void dispose() {
     _animationController.dispose();
     super.dispose();
   }
- 
+
   void _toggle() {
     setState(() {
       _open = !_open;
@@ -56,7 +57,7 @@ class _ExpandableFabClassState extends State<ExpandableFabClass>
       }
     });
   }
- 
+
   @override
   Widget build(BuildContext context) {
     return SizedBox.expand(
@@ -71,7 +72,7 @@ class _ExpandableFabClassState extends State<ExpandableFabClass>
       ),
     );
   }
- 
+
   Widget _buildTapToCloseFab() {
     return SizedBox(
       width: 56.0,
@@ -85,24 +86,21 @@ class _ExpandableFabClassState extends State<ExpandableFabClass>
             onTap: _toggle,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Icon(
-                Icons.close,
-                color:Colors.black
-              ),
+              child: Icon(Icons.close, color: Colors.black),
             ),
           ),
         ),
       ),
     );
   }
- 
+
   List<Widget> _buildExpandingActionButtons() {
     final children = <Widget>[];
     final count = widget.subChildren.length;
     final step = 90.0 / (count - 1);
     for (var i = 0, angleInDegrees = 0.0;
-    i < count;
-    i++, angleInDegrees += step) {
+        i < count;
+        i++, angleInDegrees += step) {
       children.add(
         _ExpandingActionButton(
           directionInDegrees: angleInDegrees,
@@ -114,7 +112,7 @@ class _ExpandableFabClassState extends State<ExpandableFabClass>
     }
     return children;
   }
- 
+
   Widget _buildTapToOpenFab() {
     return IgnorePointer(
       ignoring: _open,
@@ -132,17 +130,20 @@ class _ExpandableFabClassState extends State<ExpandableFabClass>
           curve: const Interval(0.25, 1.0, curve: Curves.easeInOut),
           duration: const Duration(milliseconds: 250),
           child: FloatingActionButton(
-            backgroundColor: Color(0xFFF8DA19),
+            backgroundColor: appYellow,
             foregroundColor: Colors.white,
             onPressed: _toggle,
-            child: const Icon(Icons.check,size: 30,),
+            child: const Icon(
+              Icons.check,
+              size: 30,
+            ),
           ),
         ),
       ),
     );
   }
 }
- 
+
 @immutable
 class _ExpandingActionButton extends StatelessWidget {
   _ExpandingActionButton({
@@ -152,12 +153,12 @@ class _ExpandingActionButton extends StatelessWidget {
     required this.progress,
     required this.child,
   }) : super(key: key);
- 
+
   final double directionInDegrees;
   final double maxDistance;
   final Animation<double> progress;
   final Widget child;
- 
+
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
@@ -168,10 +169,7 @@ class _ExpandingActionButton extends StatelessWidget {
           progress.value * maxDistance,
         );
         return Positioned(
-          right: 4.0 + offset.dx,
-          bottom: 4.0 + offset.dy,
-          child: child!
-        );
+            right: 4.0 + offset.dx, bottom: 4.0 + offset.dy, child: child!);
       },
       child: FadeTransition(
         opacity: progress,

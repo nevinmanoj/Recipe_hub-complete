@@ -19,7 +19,7 @@ final User? user = _auth.currentUser;
 class AddItemSub extends StatefulWidget {
   String category;
   AddItemSub({required this.category});
-  
+
   @override
   State<AddItemSub> createState() => _AddItemState();
 }
@@ -44,7 +44,7 @@ class _AddItemState extends State<AddItemSub> {
           onPressed: () {
             setState(() {
               itemName = "";
-              
+
               newUnit = units[0];
               qty = "";
               quantity = 0;
@@ -69,9 +69,9 @@ class _AddItemState extends State<AddItemSub> {
                               SizedBox(
                                 height: 15,
                               ),
-
-                              Category(category: widget.category,),
-
+                              Category(
+                                category: widget.category,
+                              ),
                               SizedBox(
                                 height: 15,
                               ),
@@ -104,7 +104,7 @@ class _AddItemState extends State<AddItemSub> {
                                       )),
                                       backgroundColor:
                                           MaterialStateProperty.all<Color>(
-                                              Color(0xEDF2D308))),
+                                              appYellow)),
                                   child: Center(
                                       child: Text("Add to Inventory",
                                           style: TextStyle(
@@ -180,7 +180,8 @@ class _CategoryState extends State<Category> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 300,height: 40,
+      width: 300,
+      height: 40,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: Colors.grey[200]?.withOpacity(0.6),
