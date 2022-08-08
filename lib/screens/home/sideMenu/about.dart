@@ -9,11 +9,12 @@ import 'package:lottie/lottie.dart';
 import 'package:untitled/shared/filter.dart';
 import 'package:vector_math/vector_math.dart' show radians;
 
-bool showFilter = false;
-var _value;
-double maxh = 0;
+// var _value;
+// double maxh = 0;
 String? veg;
 var backdropColor = Colors.white.withOpacity(1);
+
+bool showFilter = false;
 
 class AboutScreen extends StatefulWidget {
   const AboutScreen({Key? key}) : super(key: key);
@@ -118,7 +119,7 @@ class _AboutScreenState extends State<AboutScreen> {
               onPressed: () {
                 setState(() {
                   showFilter = true;
-                  backdropColor = Colors.grey.withOpacity(0.2);
+                  backdropColor = Colors.grey.withOpacity(0.4);
                   _height = ht;
                 });
               },
@@ -129,13 +130,6 @@ class _AboutScreenState extends State<AboutScreen> {
       ),
       body: Container(
         child: Stack(children: [
-          Center(
-            child: Lottie.network(
-              'https://assets8.lottiefiles.com/packages/lf20_gspk84ad.json',
-              animate: true,
-              repeat: true,
-            ),
-          ),
           if (showFilter)
             InkWell(
               onTap: () {
@@ -199,51 +193,103 @@ class _AboutScreenState extends State<AboutScreen> {
                     style: TextStyle(fontWeight: FontWeight.w500, fontSize: 17),
                   ),
                 ),
-                // SizedBox(
-                //   width: wt,
-                //   child: Row(
-                //     children: [
-                ListTile(
-                  title: Text(
-                    "VEG",
-                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
-                  ),
-                  leading: Radio(
-                    activeColor: Colors.white,
-                    value: 'veg',
-                    toggleable: true,
-                    groupValue: veg,
-                    onChanged: (value) {
-                      setState(
-                        () {
-                          veg = value as String?;
-                        },
-                      );
-                    },
-                  ),
-                ),
-                //     ],
-                //   ),
-                // ),
-                for (int i = 1; i <= 3; i++)
-                  ListTile(
-                    title: Text(
-                      'Radio $i',
-                    ),
-                    leading: Radio(
-                      activeColor: Colors.white,
-                      value: i,
-                      toggleable: true,
-                      groupValue: _value,
-                      onChanged: (value) {
-                        setState(
-                          () {
-                            _value = value;
+                Row(
+                  children: [
+                    SizedBox(
+                      width: wt * 0.4,
+                      // height: ht * 0.3,
+                      child: ListTile(
+                        title: Text(
+                          "VEG",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w500, fontSize: 15),
+                        ),
+                        leading: Radio(
+                          activeColor: Colors.green,
+                          value: 'veg',
+                          toggleable: true,
+                          groupValue: veg,
+                          onChanged: (value) {
+                            setState(
+                              () {
+                                veg = value as String?;
+                              },
+                            );
                           },
-                        );
-                      },
+                        ),
+                      ),
                     ),
-                  ),
+                    SizedBox(
+                      width: wt * 0.4,
+                      // height: ht * 0.3,
+                      child: ListTile(
+                        title: Text(
+                          "NON VEG",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w500, fontSize: 15),
+                        ),
+                        leading: Radio(
+                          activeColor: Colors.red[700],
+                          value: 'nonveg',
+                          toggleable: true,
+                          groupValue: veg,
+                          onChanged: (value) {
+                            setState(
+                              () {
+                                veg = value as String?;
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: ht * 0.55),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    SizedBox(
+                      height: 45,
+                      width: wt * 0.45,
+                      child: ElevatedButton(
+                          onPressed: () {
+                            setState(() {
+                              veg = null;
+                            });
+                          },
+                          child: Text(
+                            'Clear Filters',
+                            style: TextStyle(
+                                fontSize: 17, fontWeight: FontWeight.w600),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            side: BorderSide(
+                                color: Color(0xFF355764).withOpacity(0.4)),
+                            primary: appYellow,
+                            // MaterialStateProperty.all<Color>(appYellow)
+                          )),
+                    ),
+                    SizedBox(
+                      height: 45,
+                      width: wt * 0.45,
+                      child: ElevatedButton(
+                          onPressed: () {
+                            setState(() {});
+                          },
+                          child: Text(
+                            'Apply Filters',
+                            style: TextStyle(
+                                color: appYellow,
+                                fontSize: 17,
+                                fontWeight: FontWeight.w600),
+                          ),
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  Color.fromARGB(236, 255, 255, 255)))),
+                    ),
+                  ],
+                ),
               ]),
             ),
           )
