@@ -2,30 +2,27 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
-import 'package:sliding_up_panel/sliding_up_panel.dart';
+
 import 'package:untitled/screens/home/cook.dart';
-import 'package:untitled/screens/home/side_menu.dart';
+
 import 'package:untitled/services/database.dart';
 import 'package:untitled/shared/Constants.dart';
 import 'package:untitled/shared/classes.dart';
-import 'package:untitled/shared/filter.dart';
+
 import 'package:untitled/shared/loading.dart';
 import 'package:untitled/shared/search.dart';
 
 var defaultS;
 bool? veg;
+String? sortBy;
 var backdropColor = Colors.white.withOpacity(1);
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final User? user = _auth.currentUser;
 bool showFilter = false;
 bool ifFiltered = false;
-// bool? isVeg;
-var _value;
-
-var curStream;
 
 class CuisinesPage extends StatefulWidget {
   String Cuisine;
@@ -50,6 +47,7 @@ class _CuisinesPageState extends State<CuisinesPage> {
           width: wt * 0.2,
           child: !showFilter
               ? FloatingActionButton(
+                  backgroundColor: appYellow,
                   shape: ContinuousRectangleBorder(
                       borderRadius: BorderRadius.circular(100)),
                   // RoundedRectangleBorder(),
@@ -73,7 +71,12 @@ class _CuisinesPageState extends State<CuisinesPage> {
             onPressed: () {
               setState(() {
                 veg = null;
-                defaultS = temp.snapshots();
+                sortBy = null;
+                ifFiltered = false;
+                // defaultS = FirebaseFirestore.instance
+                //     .collection('Recipes')
+                //     .where('Cuisine', isEqualTo: widget.Cuisine)
+                //     .snapshots();
               });
 
               Navigator.pop(context);
@@ -167,9 +170,9 @@ class _CuisinesPageState extends State<CuisinesPage> {
                           // height: ht * 0.3,
                           child: ListTile(
                             title: Text(
-                              "VEG",
+                              "Veg",
                               style: TextStyle(
-                                  fontWeight: FontWeight.w500, fontSize: 15),
+                                  fontWeight: FontWeight.w500, fontSize: 16),
                             ),
                             leading: Radio(
                               activeColor: Colors.green,
@@ -191,9 +194,9 @@ class _CuisinesPageState extends State<CuisinesPage> {
                           // height: ht * 0.3,
                           child: ListTile(
                             title: Text(
-                              "NON VEG",
+                              "Non Veg",
                               style: TextStyle(
-                                  fontWeight: FontWeight.w500, fontSize: 15),
+                                  fontWeight: FontWeight.w500, fontSize: 16),
                             ),
                             leading: Radio(
                               activeColor: Colors.red[700],
@@ -213,7 +216,38 @@ class _CuisinesPageState extends State<CuisinesPage> {
                       ],
                     );
                   }),
-                  SizedBox(height: ht * 0.29),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(wt * 0.05, ht * 0.02, 0, 0),
+                    child: Text(
+                      "Sort By",
+                      style:
+                          TextStyle(fontWeight: FontWeight.w500, fontSize: 17),
+                    ),
+                  ),
+                  StatefulBuilder(
+                      builder: (BuildContext context, StateSetter setState) {
+                    return ListTile(
+                      title: Text(
+                        "Calories: Low to High",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500, fontSize: 16),
+                      ),
+                      leading: Radio(
+                        activeColor: Colors.black,
+                        value: "Calories",
+                        toggleable: true,
+                        groupValue: sortBy,
+                        onChanged: (value) {
+                          setState(
+                            () {
+                              sortBy = value as String?;
+                            },
+                          );
+                        },
+                      ),
+                    );
+                  }),
+                  SizedBox(height: ht * 0.19),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -224,6 +258,7 @@ class _CuisinesPageState extends State<CuisinesPage> {
                             onPressed: () {
                               setState(() {
                                 veg = null;
+                                sortBy = null;
                               });
                             },
                             child: Text(
@@ -243,16 +278,32 @@ class _CuisinesPageState extends State<CuisinesPage> {
                         width: wt * 0.45,
                         child: ElevatedButton(
                             onPressed: () {
-                              print(veg);
+                              int flag = 0;
                               setState(() {
                                 if (veg != null) {
-                                  print('in herer');
-                                  defaultS = temp
-                                      .where('isVeg', isEqualTo: veg)
-                                      .snapshots();
-                                } else {
-                                  defaultS = temp.snapshots();
+                                  // print('in herer');
+                                  temp = temp.where('isVeg', isEqualTo: veg);
+                                  // defaultS = temp.snapshots();
+                                  flag = 1;
                                 }
+                                if (sortBy != null) {
+                                  temp = temp.orderBy('Calories').limit(3);
+                                  // defaultS = temp.snapshots();
+                                  flag = 1;
+                                }
+
+                                if (flag == 0) {
+                                  temp = FirebaseFirestore.instance
+                                      .collection('Recipes')
+                                      .where('Cuisine',
+                                          isEqualTo: widget.Cuisine);
+                                  // defaultS = FirebaseFirestore.instance
+                                  //     .collection('Recipes')
+                                  //     .where('Cuisine',
+                                  //         isEqualTo: widget.Cuisine)
+                                  //     .snapshots();
+                                }
+                                defaultS = temp.snapshots();
                                 ifFiltered = true;
                                 showFilter = false;
                                 backdropColor = Colors.white;
@@ -301,6 +352,11 @@ class _CusineStreamState extends State<CusineStream> {
               child: CircularProgressIndicator(),
             );
           }
+
+          // if (Recipes == null) {
+          //   return LoadHistory();
+          // }
+
           return FutureBuilder(
               future: DatabaseService(uid: user!.uid).canCook(Recipes: Recipes),
               builder: (context, canCookSnapshot) {
