@@ -50,8 +50,8 @@ class _signUpState extends State<signUp> {
               ),
             ),
             Positioned(
-              top: 300,
-              left: 55,
+              top: ht * 0.3,
+              left: wt * 0.06,
               child: Container(
                   height: 450,
                   width: 350,

@@ -259,6 +259,12 @@ class _CuisinesPageState extends State<CuisinesPage> {
                               setState(() {
                                 veg = null;
                                 sortBy = null;
+                                temp = FirebaseFirestore.instance
+                                    .collection('Recipes')
+                                    .where('Cuisine',
+                                        isEqualTo: widget.Cuisine);
+                                defaultS = temp.snapshots();
+                                ifFiltered = false;
                               });
                             },
                             child: Text(
@@ -362,10 +368,11 @@ class _CusineStreamState extends State<CusineStream> {
               builder: (context, canCookSnapshot) {
                 List<bool>? canCook12 = canCookSnapshot.data as List<bool>?;
 
-                if (canCookSnapshot.data == null)
-                  // ignore: curly_braces_in_flow_control_structures
+                if (canCookSnapshot.data == null) {
                   return LoadCusines();
-                // print(canCook12);
+                }
+                // if (canCook12 == null) print(canCook12);
+
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
