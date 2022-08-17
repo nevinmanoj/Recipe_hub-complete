@@ -30,14 +30,12 @@ class _HistoryPageState extends State<HistoryPage> {
     double wt = MediaQuery.of(context).size.width;
     return Scaffold(
         appBar: AppBar(
-          title: Padding(
-            padding: EdgeInsets.fromLTRB(wt * 0.15, 0, 0, 0),
-            child: Text(
-              "Previosly Cooked",
-              style: TextStyle(
-                fontSize: 23.0,
-                fontWeight: FontWeight.bold,
-              ),
+          centerTitle: true,
+          title: Text(
+            "Previosly Cooked",
+            style: TextStyle(
+              fontSize: 23.0,
+              fontWeight: FontWeight.bold,
             ),
           ),
           backgroundColor: appYellow,

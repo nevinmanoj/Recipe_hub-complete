@@ -82,15 +82,13 @@ class _CuisinesPageState extends State<CuisinesPage> {
               Navigator.pop(context);
             },
           ),
-          title: Padding(
-            padding: EdgeInsets.fromLTRB(wt * 0.2, 0, 0, 0),
-            child: Text(
-              "${widget.Cuisine} Cuisine",
-              style: TextStyle(
-                  fontSize: 23.0,
-                  fontWeight: FontWeight.bold,
-                  color: Color.fromARGB(255, 79, 79, 79)),
-            ),
+          centerTitle: true,
+          title: Text(
+            "${widget.Cuisine} Cuisine",
+            style: TextStyle(
+                fontSize: 23.0,
+                fontWeight: FontWeight.bold,
+                color: Color.fromARGB(255, 79, 79, 79)),
           ),
           backgroundColor: appYellow,
         ),
@@ -190,7 +188,7 @@ class _CuisinesPageState extends State<CuisinesPage> {
                           ),
                         ),
                         SizedBox(
-                          width: wt * 0.4,
+                          width: wt * 0.5,
                           // height: ht * 0.3,
                           child: ListTile(
                             title: Text(

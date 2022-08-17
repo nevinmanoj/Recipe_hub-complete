@@ -1,14 +1,19 @@
-// ignore_for_file: sort_child_properties_last, prefer_const_constructors
+// ignore_for_file: sort_child_properties_last, prefer_const_constructors, use_key_in_widget_constructors
 
+import 'package:animations/animations.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:lottie/lottie.dart';
+import 'package:untitled/screens/home/cook.dart';
+import 'package:untitled/screens/home/inventory/updateInvent.dart';
+import 'package:untitled/services/database.dart';
 import 'package:untitled/shared/Constants.dart';
+import 'package:untitled/shared/classes.dart';
+import 'package:untitled/shared/expFloatingButton.dart';
 
 class AboutScreen extends StatefulWidget {
-  const AboutScreen({Key? key}) : super(key: key);
-
   @override
   State<AboutScreen> createState() => _AboutScreenState();
 }

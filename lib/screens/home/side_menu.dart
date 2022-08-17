@@ -95,8 +95,6 @@ class sideMenu extends StatelessWidget {
             leading: Icon(Icons.info),
             title: Text('About'),
             onTap: () {
-              // Navigator.push(context,
-              //     MaterialPageRoute(builder: (context) => SearchBarScreen()));
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => AboutScreen()));
             },
