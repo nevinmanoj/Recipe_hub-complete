@@ -1,6 +1,6 @@
-# untitled
+#Recipe Hub
 
-A new Flutter project.
+A flutter firebase project which store users inventory and suggests recipes based on the inventory
 
 ## Getting Started
 
