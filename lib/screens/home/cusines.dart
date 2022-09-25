@@ -94,7 +94,9 @@ class _CuisinesPageState extends State<CuisinesPage> {
         ),
         body: Stack(
           children: [
-            CusineStream(),
+            CusineStream(
+              Cuisine: widget.Cuisine,
+            ),
             if (showFilter)
               InkWell(
                 onTap: () {
@@ -337,6 +339,8 @@ class _CuisinesPageState extends State<CuisinesPage> {
 }
 
 class CusineStream extends StatefulWidget {
+  String Cuisine;
+  CusineStream({required this.Cuisine});
   @override
   State<CusineStream> createState() => _CusineStreamState();
 }
@@ -374,7 +378,7 @@ class _CusineStreamState extends State<CusineStream> {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    searchBar(),
+                    searchBar(Cuisine: widget.Cuisine),
                     Expanded(
                       child: Align(
                         alignment: Alignment.topCenter,

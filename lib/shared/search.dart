@@ -1,10 +1,18 @@
 import 'package:animations/animations.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:untitled/screens/home/cook.dart';
+import 'package:untitled/services/database.dart';
 import 'package:untitled/shared/Constants.dart';
+import 'package:untitled/shared/classes.dart';
+
+final FirebaseAuth _auth = FirebaseAuth.instance;
+final User? user = _auth.currentUser;
 
 class SearchBarScreen extends StatefulWidget {
-  // const SearchBarScreen({ required this.title});
-  // final String title;
+  String Cuisine;
+  SearchBarScreen({required this.Cuisine});
 
   @override
   State<SearchBarScreen> createState() => _SearchBarScreenState();
@@ -23,18 +31,20 @@ class _SearchBarScreenState extends State<SearchBarScreen> {
               onPressed: () {
                 showSearch(
                   context: context,
-                  delegate: CustomSearchDelegate(),
+                  delegate: CustomSearchDelegate(Cuisine: widget.Cuisine),
                 );
               },
               icon: const Icon(Icons.search),
             ),
           ],
         ),
-        body: searchBar());
+        body: searchBar(Cuisine: widget.Cuisine));
   }
 }
 
 class searchBar extends StatelessWidget {
+  String Cuisine;
+  searchBar({required this.Cuisine});
   @override
   Widget build(BuildContext context) {
     double ht = MediaQuery.of(context).size.height;
@@ -43,7 +53,7 @@ class searchBar extends StatelessWidget {
       onTap: () {
         showSearch(
           context: context,
-          delegate: CustomSearchDelegate(),
+          delegate: CustomSearchDelegate(Cuisine: Cuisine),
         );
       },
       child: Container(
@@ -76,16 +86,9 @@ class searchBar extends StatelessWidget {
 }
 
 class CustomSearchDelegate extends SearchDelegate {
-  List<String> searchTerms = [
-    'Apple',
-    'Banana',
-    'Pear',
-    'Watermelons',
-    'Oranges',
-    'Blue berries',
-    'Strawberries',
-    'Raspberries',
-  ];
+  String Cuisine;
+  CustomSearchDelegate({required this.Cuisine});
+
   @override
   List<Widget> buildActions(BuildContext context) {
     return [
@@ -110,18 +113,62 @@ class CustomSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    List<String> matchQuery = [];
-    for (var fruit in searchTerms) {
-      if (fruit.toLowerCase().contains(query.toLowerCase())) {
-        matchQuery.add(fruit);
-      }
+    var DataStream;
+
+    if (Cuisine == "") {
+      DataStream = FirebaseFirestore.instance.collection('Recipes').snapshots();
+    } else {
+      DataStream = FirebaseFirestore.instance
+          .collection('Recipes')
+          .where('Cuisine', isEqualTo: Cuisine)
+          .snapshots();
     }
-    return ListView.builder(
-      itemCount: matchQuery.length,
-      itemBuilder: (context, index) {
-        var result = matchQuery[index];
-        return ListTile(
-          title: Text(result),
+    return StreamBuilder<QuerySnapshot>(
+      stream: DataStream,
+      builder: (context, snapshot) {
+        var Recipes = snapshot.data?.docs;
+
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
+        List<String> RList = [];
+        List<String> RidList = [];
+        int i = 0;
+        for (i = 0; i < Recipes!.length; i++) {
+          RList.add(Recipes[i]['Title']);
+          RidList.add(Recipes[i].id);
+        }
+
+        List matchQuery = [];
+        // List<String> matchQuery = [];
+        for (i = 0; i < RList.length; i++) {
+          if (RList[i].toLowerCase().contains(query.toLowerCase())) {
+            matchQuery.add(i);
+          }
+        }
+
+        return ListView.builder(
+          itemCount: matchQuery.length,
+          itemBuilder: (context, index) {
+            var result = RList[matchQuery[index]];
+            return InkWell(
+              onTap: () async {
+                recipeModel R = await DatabaseService(uid: user!.uid).getRecipe(
+                    RecipeId: Recipes[matchQuery[index]].id as String);
+
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => cookPage(currentRecipe: R)));
+              },
+              child: ListTile(
+                title: Text(result),
+              ),
+            );
+          },
         );
       },
     );
@@ -129,18 +176,62 @@ class CustomSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    List<String> matchQuery = [];
-    for (var fruit in searchTerms) {
-      if (fruit.toLowerCase().contains(query.toLowerCase())) {
-        matchQuery.add(fruit);
-      }
+    var DataStream;
+
+    if (Cuisine == "") {
+      DataStream = FirebaseFirestore.instance.collection('Recipes').snapshots();
+    } else {
+      DataStream = FirebaseFirestore.instance
+          .collection('Recipes')
+          .where('Cuisine', isEqualTo: Cuisine)
+          .snapshots();
     }
-    return ListView.builder(
-      itemCount: matchQuery.length,
-      itemBuilder: (context, index) {
-        var result = matchQuery[index];
-        return ListTile(
-          title: Text(result),
+    return StreamBuilder<QuerySnapshot>(
+      stream: DataStream,
+      builder: (context, snapshot) {
+        var Recipes = snapshot.data?.docs;
+
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
+        List<String> RList = [];
+        List<String> RidList = [];
+        int i = 0;
+        for (i = 0; i < Recipes!.length; i++) {
+          RList.add(Recipes[i]['Title']);
+          RidList.add(Recipes[i].id);
+        }
+
+        List matchQuery = [];
+        // List<String> matchQuery = [];
+        for (i = 0; i < RList.length; i++) {
+          if (RList[i].toLowerCase().contains(query.toLowerCase())) {
+            matchQuery.add(i);
+          }
+        }
+
+        return ListView.builder(
+          itemCount: matchQuery.length,
+          itemBuilder: (context, index) {
+            var result = RList[matchQuery[index]];
+            return InkWell(
+              onTap: () async {
+                recipeModel R = await DatabaseService(uid: user!.uid).getRecipe(
+                    RecipeId: Recipes[matchQuery[index]].id as String);
+
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => cookPage(currentRecipe: R)));
+              },
+              child: ListTile(
+                title: Text(result),
+              ),
+            );
+          },
         );
       },
     );

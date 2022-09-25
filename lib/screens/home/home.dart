@@ -58,7 +58,9 @@ class _homeState extends State<home> {
               SizedBox(
                 height: 10,
               ),
-              searchBar(),
+              searchBar(
+                Cuisine: "",
+              ),
               SizedBox(
                 height: 15,
               ),
