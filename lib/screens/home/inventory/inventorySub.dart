@@ -90,8 +90,6 @@ class on_tap_inventory extends StatelessWidget {
                               child: Align(
                                 alignment: Alignment.centerLeft,
                                 child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
                                   children: [
                                     Text(
                                       "${keys[i]}",
@@ -108,12 +106,10 @@ class on_tap_inventory extends StatelessWidget {
                                         fontSize: 15,
                                       ),
                                     ),
-                                    Row(children: [
-                                      EditItem(
-                                          category: foodItem, item: keys[i]),
-                                      DeleteItem(
-                                          category: foodItem, item: keys[i]),
-                                    ]),
+                                    Spacer(),
+                                    EditItem(category: foodItem, item: keys[i]),
+                                    DeleteItem(
+                                        category: foodItem, item: keys[i]),
                                   ],
                                 ),
                               ),

@@ -32,3 +32,5 @@ List<String> images = [
   'https://i.imgur.com/lE7ocB3.jpg',
   'https://i.imgur.com/84iIycq.jpg',
 ];
+
+List<String> cusList = ['Indian', 'American', 'Chinese', 'Italian', 'Japanese'];

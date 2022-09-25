@@ -134,6 +134,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "flutter_launcher_name",
+      "rootUri": "file:///C:/Users/nevin/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/flutter_launcher_name-0.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.1"
+    },
+    {
       "name": "flutter_lints",
       "rootUri": "file:///C:/Users/nevin/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/flutter_lints-2.0.1",
       "packageUri": "lib/",
@@ -302,13 +308,19 @@
       "languageVersion": "2.14"
     },
     {
+      "name": "yaml",
+      "rootUri": "file:///C:/Users/nevin/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/yaml-2.2.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.4"
+    },
+    {
       "name": "untitled",
       "rootUri": "../",
       "packageUri": "lib/",
       "languageVersion": "2.17"
     }
   ],
-  "generated": "2022-08-17T15:47:43.000243Z",
+  "generated": "2022-09-23T07:08:01.634557Z",
   "generator": "pub",
   "generatorVersion": "2.17.6"
 }

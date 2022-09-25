@@ -49,6 +49,7 @@ class _HistoryPageState extends State<HistoryPage> {
                   return LoadHistory();
 
                 var result = historySnap.data as List?;
+                // print(result);
                 List<recipeModel>? historyList =
                     result![0] as List<recipeModel>?;
 

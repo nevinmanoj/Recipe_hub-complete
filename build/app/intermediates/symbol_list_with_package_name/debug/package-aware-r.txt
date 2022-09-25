@@ -214,6 +214,7 @@ layout notification_template_icon_group
 layout notification_template_part_chronometer
 layout notification_template_part_time
 mipmap ic_launcher
+mipmap licon
 raw keep
 string common_google_play_services_enable_button
 string common_google_play_services_enable_text

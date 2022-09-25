@@ -48,7 +48,10 @@ dependencies:
   sliding_up_panel: ^2.0.0+1
   
 
+flutter_launcher_name:
+  name: "Recipe Hub"
 dev_dependencies:
+  flutter_launcher_name: "^0.0.1"
   flutter_test:
     sdk: flutter
 

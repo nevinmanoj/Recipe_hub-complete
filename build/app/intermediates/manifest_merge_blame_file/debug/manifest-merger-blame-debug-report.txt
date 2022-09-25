@@ -24,8 +24,8 @@
 20        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
 20-->[androidx.core:core:1.6.0] C:\Users\nevin\.gradle\caches\transforms-3\aa701b47cec244085d46a1a42fcc7fb9\transformed\core-1.6.0\AndroidManifest.xml:24:18-86
 21        android:debuggable="true"
-22        android:icon="@mipmap/ic_launcher"
-23        android:label="untitled" >
+22        android:icon="@mipmap/licon"
+23        android:label="Recipe Hub" >
 24        <activity
 25            android:name="com.example.untitled.MainActivity"
 26            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
